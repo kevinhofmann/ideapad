@@ -1,0 +1,749 @@
+html {
+    font-family: sans-serif;
+    background: rgb(235, 142, 54);
+    display: flex;
+	justify-content: center;
+	align-items: center;
+
+}
+
+h1 {
+    font-size: 5em;
+    opacity: 0.7;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    text-shadow: 3px 5px 4px rgba(97, 97, 97, 0.6);
+    margin-bottom: 0px;
+    margin-top: 0.4em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+a:any-link {
+    text-decoration: none;
+    color: white;
+}
+
+a:-webkit-any-link {
+    text-decoration: none;
+    color: white;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 0px;
+    margin-bottom: 2.2em;
+    color:rgb(231, 237, 255);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+body {
+    width: 100%;
+    height: 90%;
+}
+
+.input {
+    height: 35px;
+    width: 18em;
+    font-size: 1.2em;
+    opacity: 0.9;
+    background-color: rgb(231, 237, 255);
+    color: rgb(46, 46, 46);
+    border: 1px white;
+    margin-top: 5px;
+    padding-left: 0.5%;
+    box-shadow: 1px 1px 15px 0.2px rgba(97, 97, 97, 0.6);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+.input:hover {
+    transform: scale(1.01) ;
+    -webkit-transition:background 0.2s ease;
+    -moz-transition:background 0.2s ease;
+    -o-transition:background 0.2s ease;
+    transition: all 0.15s;
+    transform: scale(1.008);
+    box-shadow: 2px 2px 15px 0.8px rgba(97, 97, 97, 0.9);
+}
+
+/*ANIMATIONS*/
+.fallDown {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.appear {
+    transition: all 1s;
+}
+
+.show {
+
+    opacity: 1;
+    transition: opacity 2000ms;
+  }
+
+.m-fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s linear 200ms, opacity 300ms;
+  }
+  .m-fadeIn {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s linear 0s, opacity 300ms;
+  }
+
+  @-webkit-keyframes formContainerDown {
+    0% {
+      height: 0em;
+      opacity: 0;
+    }
+    25% {
+      height: 3em;
+      opacity: 0;
+    }
+    50% {
+      height: 6em;
+      opacity: 0.3;
+    }
+    75% {
+      height: 9.5em;
+      opacity: 0.6;
+    }
+    100% {
+      height: 13em;
+      opacity: 1;
+    }
+  }
+
+  @-webkit-keyframes formContainerUp {
+    0% {
+      height: 13em;
+      opacity: 1;
+    }
+    25% {
+      height: 9.5em;
+      opacity: 0.6;
+    }
+    50% {
+      height: 6em;
+      opacity: 0.3;
+    }
+    75% {
+      height: 3em;
+      opacity: 0;
+    }
+    100% {
+      height: 0;
+      opacity: 0;
+
+    }
+  }
+
+  @-webkit-keyframes editIdeaDivDown {
+    0% {
+        transform: scaleY(0);
+    }
+    25% {
+    
+    }
+    50% {
+        
+      opacity: 0.3;
+    }
+    75% {
+
+      opacity: 0.65;
+    }
+    100% {
+        transform: scaleY(1);
+      opacity: 1;
+      display: block;
+      height: max-content;
+    }
+  }
+
+  @-webkit-keyframes editIdeaDivUp {
+    0% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+    25% {
+
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.25;
+    }
+    75% {
+      height: 15em;
+      opacity: 0;
+    }
+    100% {
+        transform: scaleY(0);
+      height: 0px;
+      opacity: 0;
+    }
+  }
+
+/*OTHER*/
+
+.add-new-idea {
+    text-align: center;
+}
+
+#idea-description {
+    margin-top: 10px;
+    margin-bottom: 1px;
+    width: 18em;
+    height: 5em;
+    font-size: 1.2em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: rgb(46, 46, 46);
+    outline: none;
+}
+
+/*
+button {
+    height: 30px;
+    width: 7em;
+    background-color: rgb(231, 237, 255);
+    border: none;
+    color: rgb(46, 46, 46);
+    margin: 0px 5px;
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+button:hover {
+    background:rgba(252, 215, 180, 0.904);
+    transform: scale(1.01) ;
+   -webkit-transition:background 0.2s ease;
+   -moz-transition:background 0.2s ease;
+   -o-transition:background 0.2s ease;
+   box-shadow: 1px 1px 3px rgb(167, 167, 167);
+   transition: all 0.15s;
+}
+*/
+
+.buttonContainer {
+    width: 10%;
+    display: flex;
+    margin-left: auto;
+    padding-right: 2%;
+    padding-left: 1.2%;
+    background: rgba(235, 142, 54, 0.603);
+}
+
+#addNewIdeaButton {
+    cursor: pointer;
+    filter: invert();
+    margin-top: 5em;
+    height: 70px;
+    width: 4em;
+    border: none;
+    margin: 0px 10px;
+    opacity: 0.8;
+    outline: none;
+    background: url("img/hinzufugen.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#addNewIdeaButton:hover {
+    filter: none;
+    background: url("img/hinzufugen_color.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 1;
+    transform: scale(1.14) ;
+    -webkit-transition:background 0.2s ease;
+    -moz-transition:background 0.2s ease;
+    -o-transition:background 0.2s ease;
+    transition: all 0.15s;
+}
+
+#forgetNewIdeaButton {
+    cursor: pointer;
+    filter: invert();
+    margin-top: 5em;
+    height: 70px;
+    width: 4em;
+    border: none;
+    margin: 0px 10px;
+    opacity: 0.8;
+    outline: none;
+    background: url("img/stornieren.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#forgetNewIdeaButton:hover {
+    filter: none;
+    background: url("img/stornieren_red.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 1;
+    transform: scale(1.14) ;
+    -webkit-transition:background 0.2s ease;
+    -moz-transition:background 0.2s ease;
+    -o-transition:background 0.2s ease;
+    transition: all 0.15s;
+}
+
+
+.editButton {
+    background: url("img/wrench.svg");
+    filter: invert(100%);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 0px;
+    outline: none;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin: auto auto;
+    margin-right: 3%;
+    opacity: 0.95;
+    padding: 1rem;
+    z-index: 2;
+}
+
+
+.removeButton {
+    background: url("img/trash-solid.svg");
+    filter: invert(100%);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: 0px;
+    outline: none;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    margin: auto auto;
+    margin-right: 2%;
+    opacity: 0.95;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.editButton:hover, .removeButton:hover {
+    transform: scale(1.2) rotate(10deg) ;
+   -webkit-transition:background 0.2s ease;
+   -moz-transition:background 0.2s ease;
+   -o-transition:background 0.2s ease;
+   transition: all 0.30s;
+   opacity: 1;
+}
+
+.editButton-editing-mode {
+    transform: scale(1.2) rotate(10deg) ;
+    transition: all 0.35s;
+    -webkit-transition:background 0.2s ease;
+    -moz-transition:background 0.2s ease;
+    -o-transition:background 0.2s ease;
+    opacity: 1;
+}
+
+.idea-form {
+    transition: all .3s ease, color .3s ease;
+    text-align: center;
+    transition: all 0.45s;
+
+}
+
+.form-container {
+    opacity: 1;
+    -webkit-animation: formContainerUp 0.2s forwards linear;
+}
+
+.form-container\:active {
+    height: auto;
+    display: block;
+    opacity: 0;
+    -webkit-animation: formContainerDown 0.2s forwards linear;
+}
+
+
+.idea-list-container {
+    background: rgb(240, 238, 237);
+    width: 50%;
+    min-height: 80em;
+    height: auto;
+    margin: 0 auto;
+    box-shadow: 0 3px 20px 5px rgb(119, 119, 119);
+    opacity: 0.9;
+    margin-top: 4%;
+    padding-bottom: 2%;
+}
+
+#idea-list {
+    color: rgb(41, 41, 41);
+    padding: 3% 5%;
+    line-height: 2em;
+    height: 100%;
+    font-size: 1.8em;
+}
+
+.ideaDivContainer {
+  width: auto;
+  display: flex;
+}
+
+
+.idea-item {
+    background: rgba(247, 196, 148, 0.304);
+    border: 1px rgb(124, 124, 124);
+    border-style: solid;
+    margin-top: 15px;
+    padding-left: 1.5%;
+    list-style: none;
+    box-shadow: 0px 0px 2px 1px rgb(197, 197, 197);
+    border: 0px;
+    transition: all 0.45s;
+    display: flex;
+    font-family: 'Staatliches', sans-serif;
+    font-size: 1.2em;
+    color: rgb(46, 46, 46);
+    z-index: 1;
+    width: 100%;
+}
+
+.ideaLabels {
+    color: rgb(46, 46, 46);
+    opacity: 0.8;
+    display: flex;
+    font-size: 0.68em;
+    margin-bottom: 0px;
+    line-height: normal;
+    margin-top: 15px;
+    margin-left: 3em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    text-shadow: 1px 1px 12px rgb(167, 167, 167, 0.7);
+}
+
+.idea-item:hover {
+     background: rgba(247, 196, 148, 0.704);
+     transform: scale(1.01) ;
+    -webkit-transition:background 0.2s ease;
+    -moz-transition:background 0.2s ease;
+    -o-transition:background 0.2s ease;
+    box-shadow: 1px 1px 4px 1px rgb(167, 167, 167);
+    transition: all 0.15s;
+    display: flex;
+}
+
+.idea-item-editing-mode {
+    background: rgba(247, 196, 148, 0.704);
+    transform: scale(1.01) ;
+   box-shadow: 1px 1px 4px 1px rgb(167, 167, 167);
+   display: flex;
+}
+
+.idea-item-mark-checked {
+    background: rgba(174, 233, 134, 0.704);
+}
+
+.transitionIdeaList {
+    opacity: 0.2!;
+
+}
+
+.showIdeaDiv {
+  transition: all 0.35s;
+  animation-fill-mode: forwards;
+  opacity: 1;
+  margin-bottom: 1.5em;
+  height: 100%;
+  margin-top: 1em;
+  padding-top: 1.2em;
+  text-align: center;
+  background:rgba(250, 250, 250, 0.98);
+  border: 3px solid rgba(247, 247, 247, 0.8);
+  box-shadow: 1px 1px 10px 1px rgb(167, 167, 167, 0.6);
+}
+
+.editIdeaDiv {
+    transition: all 0.35s;
+    animation-fill-mode: forwards;
+    opacity: 1;
+    margin-bottom: 1.5em;
+    height: 100%;
+    margin-top: 1em;
+    padding-top: 1.2em;
+    text-align: center;
+    background:rgba(250, 250, 250, 0.98);
+    border: 3px solid rgba(247, 247, 247, 0.8);
+    box-shadow: 1px 1px 10px 1px rgb(167, 167, 167, 0.6);
+}
+
+.editIdeaDiv:hover {
+    transition: all 0.35s;
+    transform: scale(1.008);
+    box-shadow: 15px 25px 22px 1px rgb(167, 167, 167, 0.7);
+}
+
+.editIdeaDiv\:active {
+    pointer-events: none;
+    /* -webkit-animation: editIdeaDivDown 0.3s forwards linear; */
+    -webkit-animation: swing-in-top-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+    animation: swing-in-top-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+}
+
+.editIdeaDiv\:hide {
+    pointer-events: none;
+    -webkit-animation: swing-out-top-bck 0.45s cubic-bezier(0.600, -0.280, 0.735, 0.045) both;
+    animation: swing-out-top-bck 0.45s cubic-bezier(0.600, -0.280, 0.735, 0.045) both;
+   /* -webkit-animation: editIdeaDivUp 0.3s forwards linear; */
+}
+
+
+/**
+ * ----------------------------------------
+ * animation swing-in-top-fwd
+ * ----------------------------------------
+ */
+ @-webkit-keyframes swing-in-top-fwd {
+    0% {
+      -webkit-transform: rotateX(-100deg);
+              transform: rotateX(-100deg);
+      -webkit-transform-origin: top;
+              transform-origin: top;
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateX(0deg);
+              transform: rotateX(0deg);
+      -webkit-transform-origin: top;
+              transform-origin: top;
+      opacity: 1;
+    }
+  }
+  @keyframes swing-in-top-fwd {
+    0% {
+      -webkit-transform: rotateX(-100deg);
+              transform: rotateX(-100deg);
+      -webkit-transform-origin: top;
+              transform-origin: top;
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: rotateX(0deg);
+              transform: rotateX(0deg);
+      -webkit-transform-origin: top;
+              transform-origin: top;
+      opacity: 1;
+    }
+  }
+
+  /**
+ * ----------------------------------------
+ * animation swing-out-top-bck
+ * ----------------------------------------
+ */
+@-webkit-keyframes swing-out-top-bck {
+    0% {
+      -webkit-transform: rotateX(0deg);
+              transform: rotateX(0deg);
+      -webkit-transform-origin: top;
+              transform-origin: top;
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: rotateX(-100deg);
+              transform: rotateX(-100deg);
+      -webkit-transform-origin: top;
+              transform-origin: top;
+      opacity: 0;
+    }
+  }
+  @keyframes swing-out-top-bck {
+    0% {
+      -webkit-transform: rotateX(0deg);
+              transform: rotateX(0deg);
+      -webkit-transform-origin: top;
+              transform-origin: top;
+      opacity: 1;
+    }
+    100% {
+      -webkit-transform: rotateX(-100deg);
+              transform: rotateX(-100deg);
+      -webkit-transform-origin: top;
+              transform-origin: top;
+      opacity: 0;
+    }
+  }
+  
+
+
+.editIdeaInput {
+    margin-top: 0.5em;
+    width: 85%;
+    height: 45px;
+    font-size: 0.65em;
+    opacity: 0.9;
+    color: rgb(46, 46, 46);
+    border: 1px white;
+    padding-left: 1%;
+    resize: none;
+    margin-bottom: 1.2em;
+    box-shadow: 1px 1px 15px 0.2px rgb(167, 167, 167, 0.4);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    outline: none;
+}
+
+
+.saveEditedIdeaButton {
+    margin-top: 5em;
+    height: 50px;
+    width: 4em;
+    background-color: rgb(243, 241, 240, 0.3);
+    border: none;
+    color: rgb(46, 46, 46);
+    margin: 0px 15px;
+    font-size: 0.5em;
+    opacity: 0.6;
+    outline: none;
+    background: url("img/save_round_bw.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.saveEditedIdeaButton:hover {
+    background: url("img/save_round_color.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 1;
+    transform: scale(1.14) ;
+    -webkit-transition:background 0.2s ease;
+    -moz-transition:background 0.2s ease;
+    -o-transition:background 0.2s ease;
+    transition: all 0.15s;
+}
+
+
+.abortEditingButton {
+    height: 50px;
+    width: 4em;
+    background-color: rgb(243, 241, 240, 0.3);
+    border: none;
+    color: rgb(46, 46, 46);
+    margin: 0px 15px;
+    font-size: 0.5em;
+    opacity: 0.6;
+    outline: none;
+    background: url("img/arrow_bw.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.abortEditingButton:hover {
+  background: url("img/arrow_color.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+transform: scale(1.14) ;
+-webkit-transition:background 0.2s ease;
+-moz-transition:background 0.2s ease;
+-o-transition:background 0.2s ease;
+transition: all 0.15s;
+opacity: 1;
+}
+
+.cancelEditedIdeaButton {
+  height: 50px;
+  width: 4em;
+  background-color: rgb(243, 241, 240, 0.3);
+  border: none;
+  color: rgb(46, 46, 46);
+  margin: 0px 15px;
+  font-size: 0.5em;
+  opacity: 0.6;
+  outline: none;
+  background: url("img/stornieren.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.cancelEditedIdeaButton:hover {
+  background: url("img/stornieren_red.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+transform: scale(1.14) ;
+-webkit-transition:background 0.2s ease;
+-moz-transition:background 0.2s ease;
+-o-transition:background 0.2s ease;
+transition: all 0.15s;
+opacity: 1;
+}
+
+.markCheckedButton {
+    height: 50px;
+    width: 4em;
+    background-color: rgb(243, 241, 240, 0.3);
+    border: none;
+    color: rgb(46, 46, 46);
+    margin: 0px 15px;
+    font-size: 0.5em;
+    opacity: 0.6;
+    outline: none;
+    background: url("img/hakchen.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.markCheckedButtonChecked {
+    cursor: pointer;
+    height: 50px;
+    width: 4em;
+    border: none;
+    color: rgb(46, 46, 46);
+    margin: 0px 15px;
+    font-size: 0.5em;
+    opacity: 0.6;
+    outline: none;
+    background: url("img/hakchen_green.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+transform: scale(1.14) ;
+-webkit-transition:background 0.2s ease;
+-moz-transition:background 0.2s ease;
+-o-transition:background 0.2s ease;
+transition: all 0.15s;
+opacity: 1;
+}
+
+.markCheckedButton:hover {
+    background: url("img/hakchen_green.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+transform: scale(1.14) ;
+-webkit-transition:background 0.2s ease;
+-moz-transition:background 0.2s ease;
+-o-transition:background 0.2s ease;
+transition: all 0.15s;
+opacity: 1;
+}
+
+.editButtonDiv {
+    padding-top: 1.2em;
+    padding-bottom: 0.8em;
+}
+    
+
+.textareaInput {
+    padding-top: 1.2%;
+    height: 8em;
+    font-family: sans-serif;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    opacity: 0.9;
+    color: rgb(46, 46, 46);
+}

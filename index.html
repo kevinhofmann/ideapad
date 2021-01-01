@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="styles.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;400;500;700;800;900&display=swap" rel="stylesheet">    
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+<title>Ideapad</title>
+</head>
+
+<body>
+    <h1><a href="index.html">IDEAPAD</a></h1>
+    <h2>Keep and pursue your fabulous ideas</h2>
+
+    <div class="add-new-idea">
+        <input type="text" id="idea-title" class="input" placeholder="Your Idea">
+    </div>
+
+    <div class="form-container">
+        <div class="idea-form">
+        <form>
+            <textarea id="idea-description" class="input" placeholder="What is it about?"></textarea><br>
+            <input id="idea-reason" class="input" placeholder="Why does it matter?">
+            <br><br>
+            <button id="addNewIdeaButton" class="button"></button>
+            <button id="forgetNewIdeaButton" class="button"></button>
+        </form>
+    </div>
+
+    </div>
+    <div class="idea-list-container">
+        <div id="idea-list">
+        </div>
+    </div>
+    <br><br><br>
+
+
+    <script src="uuidv4.js"></script>
+    <script src="ideapad.js"></script>
+    <script src="idea-edit.js"></script>
+
+</body>
+
+</html>
