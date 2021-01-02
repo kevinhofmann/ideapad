@@ -144,6 +144,7 @@ const deleteIdea = function (deleteIdea) {
         saveIdeas(allIdeas)
     }
     renderIdeas()
+    alertify.message("Idea deleted");
 }
 
 
@@ -154,6 +155,7 @@ const createIdea = () => {
     descriptionElement.value = ""
     reasonElement.value = ""
     ideaFormContainer.className = "form-container"
+    alertify.success("Idea added")
     saveIdeas(allIdeas)
     renderIdeas()
 }
@@ -168,6 +170,7 @@ const saveEditChangesForm = () => {
     allIdeas[globalVariables.ideaIndex].stepTowards = editStepTowardsInput.value;
     saveIdeas(allIdeas);
     ideaDiv.childNodes[globalVariables.ideaIndex].firstChild.textContent = editTitleInput.value;
+    alertify.success("Changes successfully saved")
 }
 
 const abortChangesEditForm = (e, ideaIndex) => {
@@ -246,25 +249,29 @@ const toggleOpacity = (e) => {
 }
 
 const checkIfInterfaceOpen = () => {
+    let wasOpen = false;
     let children = Array.from(ideaDiv.childNodes)
     children.forEach(child => {
         console.log(child.firstChild)
         if (child.className === "showIdeaDiv") {
             showIdeaDiv.remove()
+            wasOpen = true;
         }
     })
+    return wasOpen
 }
 
 
 //EDIT IDEA INTERFACE
 const editIdeaInterface = function (e, editedIdea) {
 
-
     globalVariables.ideaIndex = getIdeaIndex(editedIdea)
 
-    checkIfInterfaceOpen()
-    
-   toggleOpacity(e)
+    let interfaceOpen = checkIfInterfaceOpen()
+    if(!interfaceOpen) {
+        toggleOpacity(e)
+    }
+     //HIER MUSS ICH AUCH NOCH SO MACHEN WIE ITEM EDITRING MODE
 
     //Check if edit-form is already opened. If so, remove it to not duplicate it. Otherwise, nothing was opend, so it can be openend
     if (e.target.className !== "editButton editButton-editing-mode") {

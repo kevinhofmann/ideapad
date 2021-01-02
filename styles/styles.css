@@ -1,15 +1,21 @@
 html {
     font-family: sans-serif;
-    background: rgb(235, 142, 54);
+    background: rgb(251,186,71);
+    background: linear-gradient(90deg, rgba(251,186,71,1) 2%, rgba(255,197,70,1) 32%, rgba(255,202,85,1) 72%, rgba(255,180,57,1) 97%);
     display: flex;
 	justify-content: center;
-	align-items: center;
+  align-items: center;
+}
 
+body {
+  width: 100%;
+  height: 900%;
+  overflow-y: scroll;
 }
 
 h1 {
     font-size: 5em;
-    opacity: 0.7;
+    opacity: 0.9;
     text-align: center;
     color: rgb(255, 255, 255);
     text-shadow: 3px 5px 4px rgba(97, 97, 97, 0.6);
@@ -18,6 +24,16 @@ h1 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     letter-spacing: -0.09em;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-top: 0px;
+  margin-bottom: 2.2em;
+  color:rgb(255, 255, 255);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
 }
 
 .emptyMessageElement {
@@ -45,27 +61,12 @@ a:-webkit-any-link {
   pointer-events: none;
 }
 
-h2 {
-    text-align: center;
-    font-size: 1.5em;
-    margin-top: 0px;
-    margin-bottom: 2.2em;
-    color:rgb(231, 237, 255);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
-}
-
-body {
-    width: 100%;
-    height: 90%;
-}
-
 .input {
     height: 35px;
     width: 18em;
     font-size: 1.2em;
     opacity: 0.9;
-    background-color: rgb(231, 237, 255);
+    background-color: rgb(247, 249, 255);
     color: rgb(46, 46, 46);
     border: 1px white;
     margin-top: 5px;
@@ -93,7 +94,6 @@ body {
 }
 
 .enhanceOpacity {
-  opacity: 0.4;
   transition: opacity 1800ms;
   -webkit-animation: enhanceOpacity 0.35s forwards linear;
 }
@@ -304,14 +304,14 @@ button:hover {
     margin: 0px 10px;
     opacity: 0.8;
     outline: none;
-    background: url("img/hinzufugen.png");
+    background: url("../img/hinzufugen.png");
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 #addNewIdeaButton:hover {
     filter: none;
-    background: url("img/hinzufugen_color.png");
+    background: url("../img/hinzufugen_color.png");
     background-size: contain;
     background-repeat: no-repeat;
     opacity: 1;
@@ -332,14 +332,14 @@ button:hover {
     margin: 0px 10px;
     opacity: 0.8;
     outline: none;
-    background: url("img/stornieren.png");
+    background: url("../img/stornieren.png");
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 #forgetNewIdeaButton:hover {
     filter: none;
-    background: url("img/stornieren_red.png");
+    background: url("../img/stornieren_red.png");
     background-size: contain;
     background-repeat: no-repeat;
     opacity: 1;
@@ -352,53 +352,43 @@ button:hover {
 
 
 .editButton {
-    background: url("img/wrench.svg");
-    filter: invert(100%);
+    background: url("../img/wrench.svg");
     background-size: contain;
     background-repeat: no-repeat;
+    filter: invert(10%);
     border: 0px;
     outline: none;
     cursor: pointer;
-    width: 32px;
-    height: 32px;
+    width: 27px;
+    height: 27px;
     margin: auto auto;
-    opacity: 0.95;
-    padding: 1rem;
-    z-index: 2;
+    opacity: 0.65;
 }
 
 
 .removeButton {
-    background: url("img/trash-solid.svg");
-    filter: invert(100%);
+    background: url("../img/trash-solid.svg");
     background-size: contain;
     background-repeat: no-repeat;
+    filter: invert(10%);
     border: 0px;
     outline: none;
     cursor: pointer;
-    width: 32px;
-    height: 32px;
+    width: 27px;
+    height: 27px;
     margin: auto auto;
-    opacity: 0.95;
-    padding: 1rem;
-    overflow: hidden;
+    opacity: 0.65;
 }
 
 .editButton:hover, .removeButton:hover {
-    transform: scale(1.2) rotate(10deg) ;
-   -webkit-transition:background 0.2s ease;
-   -moz-transition:background 0.2s ease;
-   -o-transition:background 0.2s ease;
+    transform: scale(1.15);
    transition: all 0.30s;
-   opacity: 1;
+   opacity: 0.9;
 }
 
 .editButton-editing-mode {
-    transform: scale(1.2) rotate(10deg) ;
+    transform: scale(1.2);
     transition: all 0.35s;
-    -webkit-transition:background 0.2s ease;
-    -moz-transition:background 0.2s ease;
-    -o-transition:background 0.2s ease;
     opacity: 1;
 }
 
@@ -406,10 +396,10 @@ button:hover {
     transition: all .3s ease, color .3s ease;
     text-align: center;
     transition: all 0.45s;
-
 }
 
 .form-container {
+  display: none;
     opacity: 1;
     -webkit-animation: formContainerUp 0.2s forwards linear;
 }
@@ -423,13 +413,13 @@ button:hover {
 
 
 .idea-list-container {
-    background: rgb(240, 238, 237);
+    background: rgb(247, 244, 243);
     width: 50%;
     min-height: 30em;
     height: auto;
     margin: 0 auto;
     box-shadow: 0 3px 20px 5px rgb(119, 119, 119);
-    opacity: 0.9;
+    opacity: 1;
     margin-top: 4%;
     padding-bottom: 2%;
 }
@@ -453,8 +443,9 @@ button:hover {
 }
 
 .ideaDivContainer:hover {
-  background: rgba(247, 196, 148, 0.704);
-  transform: scale(1.01) ;
+  background: rgb(255,196,113);
+background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0.7) 97%);
+  transform: scale(1.035) ;
  -webkit-transition:background 0.2s ease;
  -moz-transition:background 0.2s ease;
  -o-transition:background 0.2s ease;
@@ -465,10 +456,10 @@ button:hover {
 
 
 .buttonContainer {
-  width: 16%;
+  width: 14%;
   display: flex;
-  margin-left: auto;
-  background: rgba(235, 142, 54, 0.503);
+  justify-content: space-between;
+  background: rgba(235, 172, 54, 0.503);
   }
 
 
@@ -501,8 +492,9 @@ button:hover {
 
 
 .idea-item-editing-mode {
-    background: rgba(247, 196, 148, 0.704);
-    transform: scale(1.01) ;
+  background: rgb(255,196,113);
+background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0.7) 97%);
+  transform: scale(1.035) ;
    box-shadow: 1px 1px 4px 1px rgb(167, 167, 167);
    transition: all 0.15s;
 }
@@ -558,8 +550,7 @@ button:hover {
   margin-bottom: 3em;
   color: rgb(46, 46, 46);
   opacity: 0.9;
-  text-shadow: 1px 1px 12px rgb(167, 167, 167, 0.4);
-
+  text-shadow: 1px 1px 25px rgb(167, 167, 167, 0.4);
 }
 
 .showIdeaTextContent:hover {
@@ -710,13 +701,13 @@ button:hover {
     font-size: 0.5em;
     opacity: 0.6;
     outline: none;
-    background: url("img/save_round_bw.png");
+    background: url("../img/save_round_bw.png");
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 .saveEditedIdeaButton:hover {
-    background: url("img/save_round_color.png");
+    background: url("../img/save_round_color.png");
     background-size: contain;
     background-repeat: no-repeat;
     opacity: 1;
@@ -738,13 +729,13 @@ button:hover {
     font-size: 0.5em;
     opacity: 0.6;
     outline: none;
-    background: url("img/arrow_bw.png");
+    background: url("../img/arrow_bw.png");
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 .abortEditingButton:hover {
-  background: url("img/arrow_color.png");
+  background: url("../img/arrow_color.png");
   background-size: contain;
   background-repeat: no-repeat;
 transform: scale(1.14) ;
@@ -765,13 +756,13 @@ opacity: 1;
   font-size: 0.5em;
   opacity: 0.6;
   outline: none;
-  background: url("img/stornieren.png");
+  background: url("../img/stornieren.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .cancelEditedIdeaButton:hover {
-  background: url("img/stornieren_red.png");
+  background: url("../img/stornieren_red.png");
   background-size: contain;
   background-repeat: no-repeat;
 transform: scale(1.14) ;
@@ -792,7 +783,7 @@ opacity: 1;
     font-size: 0.5em;
     opacity: 0.6;
     outline: none;
-    background: url("img/hakchen.png");
+    background: url("../img/hakchen.png");
     background-size: contain;
     background-repeat: no-repeat;
 }
@@ -807,7 +798,7 @@ opacity: 1;
     font-size: 0.5em;
     opacity: 0.6;
     outline: none;
-    background: url("img/hakchen_green.png");
+    background: url("../img/hakchen_green.png");
     background-size: contain;
     background-repeat: no-repeat;
 transform: scale(1.14) ;
@@ -819,7 +810,7 @@ opacity: 1;
 }
 
 .markCheckedButton:hover {
-    background: url("img/hakchen_green.png");
+    background: url("../img/hakchen_green.png");
     background-size: contain;
     background-repeat: no-repeat;
 transform: scale(1.14) ;
