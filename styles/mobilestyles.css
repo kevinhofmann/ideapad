@@ -1,0 +1,128 @@
+@media screen and (max-width: 800px) {
+
+    .editButton {
+        width: 50%;
+        height: 50%;
+        margin: auto auto;
+    }
+
+    #addNewIdeaButton { 
+    background: url("../img/hinzufugen_color.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    filter: invert(0%);
+    opacity: 0.9;
+    }
+
+    #forgetNewIdeaButton { 
+        background: url("../img/stornieren_red.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        filter: invert(0%);
+        opacity: 0.9;
+        }
+
+.saveEditedIdeaButton {
+            opacity: 0.8;
+            background: url("../img/hakchen_green.png");
+            background-size: contain;
+             background-repeat: no-repeat;
+             opacity: 0.9;
+        }   
+        
+        .abortEditingButton {
+            background: url("../img/arrow_color.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.9;
+        }
+
+        .cancelEditedIdeaButton {
+            background: url("../img/stornieren_red.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.9;
+        }
+
+    .ideaDivContainer {
+        line-height: 1.4em;
+        margin-top: 10px;
+    }
+
+    .idea-item {
+        font-size: 0.8em;
+        font-weight: lighter;
+    }
+
+    .idea-list-container {
+      min-width: 90%;
+      margin-top: 3em;
+      overflow: hidden;
+
+    }
+
+    h1 {
+        font-size: 3em;
+        margin-top: 0em;
+        
+    }
+  }
+  
+  h2 {
+      font-size: 1.1em;
+  }
+
+  .input {
+    height: 30px;
+    font-size: 1.0em;
+    font-weight: 300;
+  }
+
+  #idea-description.input {
+      font-size: 1em;
+      font-weight: 200;
+        }
+
+  #idea-description {
+      font-size: 1.0em;
+  }
+
+  .ideaLabels {
+      margin-left: 1.2em;
+      font-size: 0.6em;
+      font-weight: 400;
+      text-align: left;
+  }
+
+  .showIdeaTextContent {
+      font-size: 0.7em;
+      font-weight: 500;
+  }
+
+  .showIdeaDiv {
+      width: 100%;
+      padding-top: 0.1em;
+  }
+
+  .editButtonDiv {
+      padding-top: 10px;
+  }
+
+#addNewIdeaButton {
+    height: 40px;
+}
+
+#forgetNewIdeaButton {
+    height: 40px;
+}
+
+.editIdeaInput {
+    padding-left: 1%;
+    font-size: 0.55em;
+    width: 90%;
+    
+}
+
+.editIdeaDiv {
+    padding-top: 0px;
+}

@@ -9,10 +9,19 @@ html {
 
 body {
   width: 100%;
-  height: 900%;
+  height: 100%;
   overflow-y: scroll;
 }
 
+footer {
+  font-size: 1em;
+  color: white;
+  opacity: 0.4;
+  text-align: center;
+  font-family: 'Indie Flower', sans-serif;
+  font-weight: 100;
+
+}
 h1 {
     font-size: 5em;
     opacity: 0.9;
@@ -74,6 +83,8 @@ a:-webkit-any-link {
     box-shadow: 1px 1px 15px 0.2px rgba(97, 97, 97, 0.6);
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
+    -webkit-font-smoothing: subpixel-antialiased;
+    backface-visibility: unset;
 }
 
 .input:hover {
@@ -82,9 +93,9 @@ a:-webkit-any-link {
     -moz-transition:background 0.2s ease;
     -o-transition:background 0.2s ease;
     transition: all 0.15s;
-    transform: scale(1.008);
+    transform: scale(1.003);
     box-shadow: 2px 2px 15px 0.8px rgba(97, 97, 97, 0.9);
-}
+  }
 
 /*ANIMATIONS*/
 .reducedOpacity {
@@ -352,38 +363,23 @@ button:hover {
 
 
 .editButton {
-    background: url("../img/wrench.svg");
+    background: url("../img/zahnrad.png");
     background-size: contain;
     background-repeat: no-repeat;
-    filter: invert(10%);
     border: 0px;
     outline: none;
     cursor: pointer;
-    width: 27px;
-    height: 27px;
+    width: 55%;
+    height: 55%;
     margin: auto auto;
-    opacity: 0.65;
+    margin-left: 30%;
+    opacity: 0.7;
 }
 
-
-.removeButton {
-    background: url("../img/trash-solid.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    filter: invert(10%);
-    border: 0px;
-    outline: none;
-    cursor: pointer;
-    width: 27px;
-    height: 27px;
-    margin: auto auto;
-    opacity: 0.65;
-}
-
-.editButton:hover, .removeButton:hover {
-    transform: scale(1.15);
+.editButton:hover {
+    transform: scale(1.1) rotate(8deg);
    transition: all 0.30s;
-   opacity: 0.9;
+   opacity: 0.93;
 }
 
 .editButton-editing-mode {
@@ -415,6 +411,7 @@ button:hover {
 .idea-list-container {
     background: rgb(247, 244, 243);
     width: 50%;
+    min-width: 50%;
     min-height: 30em;
     height: auto;
     margin: 0 auto;
@@ -427,13 +424,13 @@ button:hover {
 #idea-list {
     color: rgb(41, 41, 41);
     padding: 3% 5%;
-    line-height: 2em;
     height: 100%;
     font-size: 1.8em;
 }
 
 .ideaDivContainer {
   width: auto;
+  line-height: 2em;
   display: flex;
   margin-top: 15px;
   box-shadow: 0px 0px 2px 1px rgb(197, 197, 197);
@@ -456,7 +453,9 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
 
 
 .buttonContainer {
-  width: 14%;
+  width: 10%;
+  min-width: 10%;
+  max-width: 15%;
   display: flex;
   justify-content: space-between;
   background: rgba(235, 172, 54, 0.503);
@@ -481,13 +480,13 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
     opacity: 0.8;
     display: flex;
     font-size: 0.68em;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
     line-height: normal;
-    margin-top: 20px;
-    margin-left: 3em;
+    margin-top: 25px;
+    margin-left: 1.5em;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    text-shadow: 1px 1px 12px rgb(167, 167, 167, 0.7);
+    font-weight: 500;
+    text-shadow: 1px 1px 12px rgb(167, 167, 167, 0.2);
 }
 
 
@@ -546,16 +545,14 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
 .showIdeaTextContent {
   margin-left: 3em;
   font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
+  font-weight: 450;
   margin-bottom: 3em;
   color: rgb(46, 46, 46);
   opacity: 0.9;
-  text-shadow: 1px 1px 25px rgb(167, 167, 167, 0.4);
+  text-shadow: 1px 1px 25px rgb(167, 167, 167, 0.2);
 }
 
 .showIdeaTextContent:hover {
-  font-weight: 600;
-  transition: all 0.5s;
 
 }
 
@@ -566,7 +563,7 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
     margin-bottom: 1.5em;
     height: 100%;
     margin-top: 1em;
-    padding-top: 1.2em;
+    padding-top: 1em;
     text-align: center;
     background:rgba(250, 250, 250, 0.98);
     border: 3px solid rgba(247, 247, 247, 0.8);
@@ -675,7 +672,7 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
 .editIdeaInput {
     margin-top: 0.5em;
     width: 85%;
-    height: 45px;
+    height: 40px;
     font-size: 0.65em;
     opacity: 0.9;
     color: rgb(46, 46, 46);
@@ -690,7 +687,7 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
 }
 
 
-.saveEditedIdeaButton {
+.saveEditedIdeaButtonold {
     margin-top: 5em;
     height: 50px;
     width: 4em;
@@ -706,7 +703,7 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
     background-repeat: no-repeat;
 }
 
-.saveEditedIdeaButton:hover {
+.saveEditedIdeaButtonold:hover {
     background: url("../img/save_round_color.png");
     background-size: contain;
     background-repeat: no-repeat;
@@ -747,6 +744,7 @@ opacity: 1;
 }
 
 .cancelEditedIdeaButton {
+  
   height: 50px;
   width: 4em;
   background-color: rgb(243, 241, 240, 0.3);
@@ -773,7 +771,7 @@ transition: all 0.15s;
 opacity: 1;
 }
 
-.markCheckedButton {
+.saveEditedIdeaButton {
     height: 50px;
     width: 4em;
     background-color: rgb(243, 241, 240, 0.3);
@@ -788,7 +786,7 @@ opacity: 1;
     background-repeat: no-repeat;
 }
 
-.markCheckedButtonChecked {
+.saveEditedIdeaButton:hover {
     cursor: pointer;
     height: 50px;
     width: 4em;
@@ -837,4 +835,6 @@ opacity: 1;
     font-weight: 400;
     opacity: 0.9;
     color: rgb(46, 46, 46);
+    -webkit-font-smoothing: subpixel-antialiased;
+    backface-visibility: unset;
 }

@@ -47,7 +47,7 @@ breakElement.innerHTML = "<br>"
 emptyMessageElement.className = "emptyMessageElement";
 emptyMessageElement2.className = "emptyMessageElement";
 showIdeaDiv.className = "showIdeaDiv";
-saveChangesButton.classList.add("markCheckedButton");
+saveChangesButton.classList.add("saveEditedIdeaButton");
 abortChangesButton.classList.add("abortEditingButton");
 cancelIdeaButton.classList.add("cancelEditedIdeaButton");
 editTitleInput.classList.add("editIdeaInput");
@@ -114,7 +114,7 @@ const constructShowInterfaceDOM = () => {
 
 //IDEA CLASS AND CONSTRUCTOR
 class Idea {
-    constructor(id, title, description, reason, stepTowards, status) {
+    constructor(id, title, description, reason, stepTowards = "", status) {
         this.id = id,
             this.title = title,
             this.description = description,
@@ -189,6 +189,19 @@ const markIdeaChecked = (e, ideaIndex) => {
     saveIdeas(allIdeas)
 }
 
+const cancelIdea = (e, ideaIndex) => {
+    e.preventDefault();
+    alertify.confirm("Sure?", "Do you really want to remove this idea from your list?", function() {
+        allIdeas.splice(ideaIndex, 1);
+    saveIdeas(allIdeas);
+    renderIdeas();
+        alertify.message("Idea removed") }
+        , function() {
+            alertify.error("Aborted")
+        }
+    )
+}
+
 
 //INTERFACE INTERACTION
 const emptyDivElement = (div) => {
@@ -219,7 +232,11 @@ const showIdeaInterface = function (e, idea) {
         showIdeaTitle.textContent = idea.title
         showIdeaDescription.textContent = idea.description
         showIdeaReason.textContent = idea.reason
-        showIdeaStepToward.textContent = idea.stepTowards
+        if(idea.stepTowards.length === 0) {
+            showIdeaStepToward.textContent = "Not defined yet..."
+        } else {
+            showIdeaStepToward.textContent = idea.stepTowards
+        }
         
         ideaDiv.insertBefore(showIdeaDiv, ideaDiv.childNodes[i])
 
@@ -288,14 +305,12 @@ const editIdeaInterface = function (e, editedIdea) {
         editReasonInput.value = allIdeas[globalVariables.ideaIndex].reason
         editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards
 
-        markCheckedButton.addEventListener("click", function () { markIdeaChecked(e, globalVariables.ideaIndex) });
-        saveChangesButton.addEventListener("click", saveEditChangesForm)
+        saveChangesButton.addEventListener("click", function () { saveEditChangesForm });
         abortChangesButton.addEventListener("click", function () { abortChangesEditForm(e, globalVariables.ideaIndex) });
-
+        cancelIdeaButton.addEventListener("click", function () { cancelIdea(e, globalVariables.ideaIndex) }); 
         constructEditInterfaceDOM()
 
         const i = globalVariables.ideaIndex + 1
-        console.log("I: " + i)
         ideaDiv.insertBefore(editIdeaDiv, ideaDiv.childNodes[i])
 
         editIdeaDiv.classList.toggle("editIdeaDiv:active")
@@ -317,10 +332,8 @@ const renderIdeas = function () {
         ideaDivContainer.classList.add("ideaDivContainer")
         const buttonDiv = document.createElement("div")
         const editButton = document.createElement("button")
-        const removeButton = document.createElement("button")
         buttonDiv.classList.add("buttonContainer")
         editButton.classList.add("editButton")
-        removeButton.classList.add("removeButton")
 
         const newIdea = document.createElement("li");
         newIdea.innerText = idea.title;
@@ -332,18 +345,12 @@ const renderIdeas = function () {
 
         editButton.addEventListener("click", function (e) {
             e.preventDefault()
-         //   ideaDivContainer.classList.toggle("idea-item-editing-mode")
             editButton.classList.toggle("editButton-editing-mode")
             newIdea.classList.toggle("notClickable")
             editIdeaInterface(e, idea)
         })
 
-        removeButton.addEventListener("click", function () {
-            deleteIdea(idea.id)
-        })
-
         buttonDiv.appendChild(editButton)
-        buttonDiv.appendChild(removeButton)
         ideaDivContainer.appendChild(newIdea)
         ideaDivContainer.appendChild(buttonDiv)
         ideaDiv.appendChild(ideaDivContainer)
