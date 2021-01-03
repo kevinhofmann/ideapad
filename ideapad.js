@@ -2,7 +2,8 @@
 let globalVariables = {
     ideaTextInput: "",
     editingIdea: "",
-    ideaIndex: ""
+    ideaIndex: "",
+    e: ""
 }
 
 const getSavedIdeas = () => {
@@ -164,6 +165,7 @@ const createIdea = () => {
 //EVENT HANDLER EDIT FORM
 
 const saveEditChangesForm = () => {
+    if(globalVariables.e.target.parentElement.parentElement.firstChild.innerText === allIdeas[globalVariables.ideaIndex].title) {
     allIdeas[globalVariables.ideaIndex].title = editTitleInput.value;
     allIdeas[globalVariables.ideaIndex].description = editDescriptionInput.value;
     allIdeas[globalVariables.ideaIndex].reason = editReasonInput.value;
@@ -171,14 +173,15 @@ const saveEditChangesForm = () => {
     saveIdeas(allIdeas);
     ideaDiv.childNodes[globalVariables.ideaIndex].firstChild.textContent = editTitleInput.value;
     alertify.success("Changes successfully saved")
+    }
+
 }
 
-const abortChangesEditForm = (e, ideaIndex) => {
-    e.preventDefault();
-    editTitleInput.value = allIdeas[ideaIndex].title
-    editDescriptionInput.value = allIdeas[ideaIndex].description
-    editReasonInput.value = allIdeas[ideaIndex].reason
-    editStepTowardsInput.value = allIdeas[ideaIndex].stepTowards
+const abortChangesEditForm = () => {
+    editTitleInput.value = allIdeas[globalVariables.ideaIndex].title
+    editDescriptionInput.value = allIdeas[globalVariables.ideaIndex].description
+    editReasonInput.value = allIdeas[globalVariables.ideaIndex].reason
+    editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards
 }
 
 const markIdeaChecked = (e, ideaIndex) => {
@@ -189,10 +192,9 @@ const markIdeaChecked = (e, ideaIndex) => {
     saveIdeas(allIdeas)
 }
 
-const cancelIdea = (e, ideaIndex) => {
-    e.preventDefault();
+const cancelIdea = () => {
     alertify.confirm("Sure?", "Do you really want to remove this idea from your list?", function() {
-        allIdeas.splice(ideaIndex, 1);
+        allIdeas.splice(globalVariables.ideaIndex, 1);
     saveIdeas(allIdeas);
     renderIdeas();
         alertify.message("Idea removed") }
@@ -232,8 +234,20 @@ const showIdeaInterface = function (e, idea) {
         showIdeaTitle.textContent = idea.title
         showIdeaDescription.textContent = idea.description
         showIdeaReason.textContent = idea.reason
+        if(idea.description.length < 1) {
+            showIdeaDescription.textContent = "..."
+        } else {
+            showIdeaDescription.textContent = idea.description
+        }
+
+        if(idea.reason.length < 1) {
+            showIdeaReason.textContent = "..."
+        } else {
+            showIdeaReason.textContent = idea.reason
+        }
+
         if(idea.stepTowards.length === 0) {
-            showIdeaStepToward.textContent = "Not defined yet..."
+            showIdeaStepToward.textContent = "..."
         } else {
             showIdeaStepToward.textContent = idea.stepTowards
         }
@@ -269,7 +283,6 @@ const checkIfInterfaceOpen = () => {
     let wasOpen = false;
     let children = Array.from(ideaDiv.childNodes)
     children.forEach(child => {
-        console.log(child.firstChild)
         if (child.className === "showIdeaDiv") {
             showIdeaDiv.remove()
             wasOpen = true;
@@ -283,6 +296,7 @@ const checkIfInterfaceOpen = () => {
 const editIdeaInterface = function (e, editedIdea) {
 
     globalVariables.ideaIndex = getIdeaIndex(editedIdea)
+    globalVariables.e = e;
 
     let interfaceOpen = checkIfInterfaceOpen()
     if(!interfaceOpen) {
@@ -294,6 +308,7 @@ const editIdeaInterface = function (e, editedIdea) {
     if (e.target.className !== "editButton editButton-editing-mode") {
         ideaDiv.childNodes[globalVariables.ideaIndex].classList.remove("idea-item-editing-mode")
         editIdeaDiv.classList.add("editIdeaDiv:hide")
+        saveChangesButton.removeEventListener("click", saveEditChangesForm);
         setTimeout(() => { editIdeaDiv.className = ""; editIdeaDiv.remove(); }, 450);
     } else {
         ideaDiv.childNodes[globalVariables.ideaIndex].classList.add("idea-item-editing-mode")
@@ -305,9 +320,10 @@ const editIdeaInterface = function (e, editedIdea) {
         editReasonInput.value = allIdeas[globalVariables.ideaIndex].reason
         editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards
 
-        saveChangesButton.addEventListener("click", function () { saveEditChangesForm });
-        abortChangesButton.addEventListener("click", function () { abortChangesEditForm(e, globalVariables.ideaIndex) });
-        cancelIdeaButton.addEventListener("click", function () { cancelIdea(e, globalVariables.ideaIndex) }); 
+
+        saveChangesButton.addEventListener("click", saveEditChangesForm);
+        abortChangesButton.addEventListener("click", abortChangesEditForm);
+        cancelIdeaButton.addEventListener("click", cancelIdea); 
         constructEditInterfaceDOM()
 
         const i = globalVariables.ideaIndex + 1
@@ -357,7 +373,7 @@ const renderIdeas = function () {
     })
     } else {
         emptyMessageElement.textContent = "Life is empty without inspiring ideas."
-        emptyMessageElement2.textContent =  "Start following through and step up now!"
+        emptyMessageElement2.textContent =  "Add one above and start transforming it into reality!"
         ideaDiv.appendChild(breakElement)
         ideaDiv.appendChild(emptyMessageElement)
         ideaDiv.appendChild(emptyMessageElement2)
