@@ -3,7 +3,8 @@ let globalVariables = {
     ideaTextInput: "",
     editingIdea: "",
     ideaIndex: "",
-    e: ""
+    e: "",
+    idea: ""
 }
 
 const getSavedIdeas = () => {
@@ -35,8 +36,10 @@ const editTitleInput = document.createElement("input");
 const editDescriptionInput = document.createElement("textarea");
 const editReasonInput = document.createElement("input");
 const editStepTowardsInput = document.createElement("input");
-const editButtonDiv = document.createElement("div")
+const editButtonDiv = document.createElement("div");
+const showIdeaButtonDiv = document.createElement("div");
 const markCheckedButton = document.createElement("button");
+const markUncheckedButton = document.createElement("button");
 const abortChangesButton = document.createElement("button");
 const saveChangesButton = document.createElement("button");
 const cancelIdeaButton = document.createElement("button")
@@ -48,15 +51,23 @@ breakElement.innerHTML = "<br>"
 emptyMessageElement.className = "emptyMessageElement";
 emptyMessageElement2.className = "emptyMessageElement";
 showIdeaDiv.className = "showIdeaDiv";
+markUncheckedButton.classList.add("markUncheckedButton")
+markUncheckedButton.setAttribute("title", "Undo completion");
+markCheckedButton.classList.add("markCheckedButton");
+markCheckedButton.setAttribute("title", "Mark idea completed");
 saveChangesButton.classList.add("saveEditedIdeaButton");
+saveChangesButton.setAttribute("title", "Save changes");
 abortChangesButton.classList.add("abortEditingButton");
+abortChangesButton.setAttribute("title", "Reset changes");
 cancelIdeaButton.classList.add("cancelEditedIdeaButton");
+cancelIdeaButton.setAttribute("title", "Remove idea");
 editTitleInput.classList.add("editIdeaInput");
 editDescriptionInput.classList.add("editIdeaInput")
 editDescriptionInput.classList.add("textareaInput");
 editReasonInput.classList.add("editIdeaInput");
 editStepTowardsInput.classList.add("editIdeaInput");
-editButtonDiv.classList.add("editButtonDiv")
+editButtonDiv.classList.add("editButtonDiv");
+showIdeaButtonDiv.classList.add("showIdeaButtonDiv");
 
 const ideaTitleLabel = document.createElement("span");
 ideaTitleLabel.classList.add("ideaLabels")
@@ -84,7 +95,6 @@ const constructEditInterfaceDOM = () => {
     ideaDescriptionLabel.innerHTML = "Describe it as preciesly as possible<br>";
     ideaReasonLabel.innerHTML = "Why do you want to pursue this idea?<br>";
     ideaStepTowardsLabel.innerHTML = "Which little thing would bring you closer?"
-
     editIdeaDiv.appendChild(ideaTitleLabel);
     editIdeaDiv.appendChild(editTitleInput);
     editIdeaDiv.appendChild(ideaDescriptionLabel);
@@ -100,7 +110,8 @@ const constructEditInterfaceDOM = () => {
 }
 
 
-const constructShowInterfaceDOM = () => {
+const constructShowInterfaceDOM = (idea) => {
+    showIdeaDiv.remove()
     ideaDescriptionLabel.innerHTML = "Description<br>";
     ideaReasonLabel.innerHTML = "Your Why<br>";
     ideaStepTowardsLabel.innerHTML = "Your next step"
@@ -110,17 +121,31 @@ const constructShowInterfaceDOM = () => {
     showIdeaDiv.appendChild(showIdeaReason)
     showIdeaDiv.appendChild(ideaStepTowardsLabel)
     showIdeaDiv.appendChild(showIdeaStepToward)
+    showIdeaButtonDiv.remove();
+    if(idea.status === "progress") {
+        showIdeaButtonDiv.appendChild(markCheckedButton)
+        showIdeaDiv.appendChild(showIdeaButtonDiv)
+        if(showIdeaButtonDiv.contains(markUncheckedButton)) {
+            markUncheckedButton.remove()
+        }
+    } else if(idea.status === "checked") {
+        showIdeaButtonDiv.appendChild(markUncheckedButton)
+        showIdeaDiv.appendChild(showIdeaButtonDiv)
+        if(showIdeaButtonDiv.contains(markCheckedButton)) {
+            markCheckedButton.remove()
+        }
+    }
 }
 
 
 //IDEA CLASS AND CONSTRUCTOR
 class Idea {
-    constructor(id, title, description, reason, stepTowards = "", status) {
+    constructor(id, title, description, reason, stepTowards = "", status = "progress") {
         this.id = id,
-            this.title = title,
-            this.description = description,
-            this.reason = reason,
-            this.stepTowards = stepTowards
+        this.title = title,
+        this.description = description,
+        this.reason = reason,
+        this.stepTowards = stepTowards
         this.status = status
     }
 }
@@ -163,7 +188,6 @@ const createIdea = () => {
 
 
 //EVENT HANDLER EDIT FORM
-
 const saveEditChangesForm = () => {
     if(globalVariables.e.target.parentElement.parentElement.firstChild.innerText === allIdeas[globalVariables.ideaIndex].title) {
     allIdeas[globalVariables.ideaIndex].title = editTitleInput.value;
@@ -184,13 +208,24 @@ const abortChangesEditForm = () => {
     editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards
 }
 
-const markIdeaChecked = (e, ideaIndex) => {
-    e.preventDefault();
-    // ideaItemLi.classList.add("idea-item-mark-checked")
-    // markCheckedButton.classList.add("markCheckedButtonChecked")
-    allIdeas[ideaIndex].status = "checked"
+const markIdeaChecked = () => {
+    globalVariables.e.target.parentElement.classList.add("checked")
+    allIdeas[globalVariables.ideaIndex].status = "checked"
+    alertify.success("Congratulations, you've made it!")
     saveIdeas(allIdeas)
+    renderIdeas()
 }
+
+const markIdeaUnchecked = () => {
+    globalVariables.e.target.parentElement.classList.remove("checked")
+    allIdeas[globalVariables.ideaIndex].status = "progress"
+    alertify.message("Completion revoked, get back to work")
+    saveIdeas(allIdeas)
+    renderIdeas()
+}
+
+markCheckedButton.addEventListener("click", markIdeaChecked);
+markUncheckedButton.addEventListener("click", markIdeaUnchecked);
 
 const cancelIdea = () => {
     alertify.confirm("Sure?", "Do you really want to remove this idea from your list?", function() {
@@ -210,26 +245,31 @@ const emptyDivElement = (div) => {
     div.innerHTML = ""
 }
 
-
 //SHOW IDEA INTERFACE
 const showIdeaInterface = function (e, idea) {
     let checkIfOpen = true;
 
     //activate Opacity and highlighting for selected item
     toggleOpacity(e)
+    if(e.target.parentElement.classList.contains("checked")) {
+        e.target.parentElement.classList.add("idea-item-editing-mode-checked")
+    } else {
     e.target.parentElement.classList.toggle("idea-item-editing-mode")
-
+    }
     ideaDiv.childNodes.forEach(node => {
         if (node.className === "showIdeaDiv") {
             checkIfOpen = false;
+            e.target.parentElement.classList.remove("idea-item-editing-mode-checked")
             showIdeaDiv.classList.add("showIdeaDiv:hide")
         setTimeout(() => { showIdeaDiv.className = ""; showIdeaDiv.remove(); }, 450);
         }
     })
     if (checkIfOpen) {
         showIdeaDiv.className = "showIdeaDiv"
-        constructShowInterfaceDOM()
+        constructShowInterfaceDOM(idea)
         globalVariables.ideaIndex = getIdeaIndex(idea)
+        globalVariables.e = e;
+        globalVariables.idea = idea;
         const i = globalVariables.ideaIndex + 1
         showIdeaTitle.textContent = idea.title
         showIdeaDescription.textContent = idea.description
@@ -268,7 +308,7 @@ const toggleOpacity = (e) => {
         if (e.target.parentElement.parentElement === child || e.target.parentElement === child) {
             return;
         } else if (child.firstChild.nodeName.toLowerCase() == 'li') {
-            if (child.className === 'ideaDivContainer reducedOpacity' || child.className === 'showIdeaDiv reducedOpacity') {
+            if (child.classList.contains("reducedOpacity")) {
                 child.classList.remove("reducedOpacity")
                 child.classList.add("enhanceOpacity")
             } else {
@@ -320,7 +360,6 @@ const editIdeaInterface = function (e, editedIdea) {
         editReasonInput.value = allIdeas[globalVariables.ideaIndex].reason
         editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards
 
-
         saveChangesButton.addEventListener("click", saveEditChangesForm);
         abortChangesButton.addEventListener("click", abortChangesEditForm);
         cancelIdeaButton.addEventListener("click", cancelIdea); 
@@ -344,16 +383,26 @@ const renderIdeas = function () {
     ideaDiv.classList.add("idea-div");
     if(allIdeas.length > 0) {
     allIdeas.forEach((idea) => {
+        const checkedIcon = document.createElement("button")
+        checkedIcon.classList.add("checkedIcon")
         const ideaDivContainer = document.createElement("div")
         ideaDivContainer.classList.add("ideaDivContainer")
         const buttonDiv = document.createElement("div")
         const editButton = document.createElement("button")
+        editButton.setAttribute("title", "Edit idea");
         buttonDiv.classList.add("buttonContainer")
         editButton.classList.add("editButton")
 
         const newIdea = document.createElement("li");
         newIdea.innerText = idea.title;
         newIdea.classList.add("idea-item");
+
+        if(idea.status === "checked") {
+            ideaDivContainer.classList.add("checked")
+            newIdea.append(checkedIcon)
+        } else {
+            ideaDivContainer.classList.add("unchecked")
+        }
 
         newIdea.addEventListener("click", function (e) {
             showIdeaInterface(e, idea)

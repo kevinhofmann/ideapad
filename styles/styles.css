@@ -282,30 +282,6 @@ a:-webkit-any-link {
     outline: none;
 }
 
-/*
-button {
-    height: 30px;
-    width: 7em;
-    background-color: rgb(231, 237, 255);
-    border: none;
-    color: rgb(46, 46, 46);
-    margin: 0px 5px;
-    font-size: 1.1em;
-    opacity: 0.9;
-}
-
-button:hover {
-    background:rgba(252, 215, 180, 0.904);
-    transform: scale(1.01) ;
-   -webkit-transition:background 0.2s ease;
-   -moz-transition:background 0.2s ease;
-   -o-transition:background 0.2s ease;
-   box-shadow: 1px 1px 3px rgb(167, 167, 167);
-   transition: all 0.15s;
-}
-*/
-
-
 #addNewIdeaButton {
     cursor: pointer;
     filter: invert();
@@ -417,7 +393,7 @@ button:hover {
     min-height: 30em;
     height: auto;
     margin: 0 auto;
-    box-shadow: 0 3px 20px 5px rgb(119, 119, 119);
+    box-shadow: 0 3px 20px 5px rgb(119, 119, 119, 0.4);
     opacity: 1;
     margin-top: 4%;
     padding-bottom: 2%;
@@ -442,15 +418,28 @@ button:hover {
 }
 
 .ideaDivContainer:hover {
-  background: rgb(255,196,113);
-background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0.7) 97%);
-  transform: scale(1.035) ;
- -webkit-transition:background 0.2s ease;
- -moz-transition:background 0.2s ease;
- -o-transition:background 0.2s ease;
- box-shadow: 1px 1px 4px 1px rgb(167, 167, 167);
- transition: all 0.15s;
- display: flex;
+transform: scale(1.015) ;
+box-shadow: 1px 1px 4px 1px rgb(167, 167, 167, 0.7);
+transition: all 0.15s;
+display: flex;
+}
+
+.checkedIcon {
+  height: 2em;
+  width: 2em;
+  background-color: rgb(243, 241, 240, 0.3);
+  border: none;
+  color: rgb(46, 46, 46);
+  margin-right: 0.9em;
+  margin-left: auto;
+  margin-bottom: auto;
+  margin-top: auto;
+  font-size: 0.5em;
+  opacity: 0.6;
+  outline: none;
+  background: url("../img/hakchen_green.png");
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 
@@ -475,6 +464,21 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
     width: 100%;
 }
 
+.unchecked:hover {
+  background: rgb(255,196,113);
+  background: linear-gradient(169deg, rgba(255,196,113,0.6) 38%, rgba(255,178,50,0.6) 97%);
+}
+
+.checked {
+  background: rgb(169,246,10);
+background: linear-gradient(86deg, rgba(169,246,10,0.35) 35%, rgba(255,173,38,0) 80%);
+}
+
+.checked:hover {
+  background: rgb(8, 255, 50);
+    background: linear-gradient(169deg, rgba(146, 255, 113, 0.6) 38%, rgba(255,178,50,0.6) 97%);
+  }  
+
 .ideaLabels {
     color: rgb(46, 46, 46);
     opacity: 0.8;
@@ -488,18 +492,22 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
     text-shadow: 1px 1px 12px rgb(167, 167, 167, 0.2);
 }
 
-
 .idea-item-editing-mode {
   background: rgb(255,196,113);
-background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0.7) 97%);
+  background: linear-gradient(169deg, rgba(255,196,113,0.6) 38%, rgba(255,178,50,0.6) 97%);
+  transform: scale(1.015) ;
+   box-shadow: 1px 1px 4px 1px rgb(167, 167, 167, 0.7);
+   transition: all 0.15s;
+}
+
+.idea-item-editing-mode-checked {
+  background: rgb(8, 255, 50);
+  background: linear-gradient(90deg, rgba(146, 255, 113, 0.6) 38%, rgba(255,178,50,0.6) 97%);
   transform: scale(1.035) ;
    box-shadow: 1px 1px 4px 1px rgb(167, 167, 167);
    transition: all 0.15s;
 }
 
-.idea-item-mark-checked {
-    background: rgba(174, 233, 134, 0.704);
-}
 
 .transitionIdeaList {
     opacity: 0.2!;
@@ -511,7 +519,7 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
   animation-fill-mode: forwards;
   opacity: 1;
   margin-bottom: 1.5em;
-  padding-bottom: 2em;
+  padding-bottom: 1em !important;
   padding: 1.5em;
   height: 100%;
   margin-top: 1em;
@@ -574,7 +582,7 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
 .editIdeaDiv:hover {
     transition: all 0.35s;
     transform: scale(1.008);
-    box-shadow: 15px 25px 22px 1px rgb(167, 167, 167, 0.7);
+    box-shadow: 3px 10px 10px 0.5px rgb(167, 167, 167, 0.6);
 }
 
 .editIdeaDiv\:active {
@@ -688,36 +696,6 @@ background: linear-gradient(169deg, rgba(255,196,113,0.7) 38%, rgba(255,178,50,0
     padding-right: 0px !important;
 }
 
-
-.saveEditedIdeaButtonold {
-    margin-top: 5em;
-    height: 50px;
-    width: 4em;
-    background-color: rgb(243, 241, 240, 0.3);
-    border: none;
-    color: rgb(46, 46, 46);
-    margin: 0px 15px;
-    font-size: 0.5em;
-    opacity: 0.6;
-    outline: none;
-    background: url("../img/save_round_bw.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-.saveEditedIdeaButtonold:hover {
-    background: url("../img/save_round_color.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 1;
-    transform: scale(1.14) ;
-    -webkit-transition:background 0.2s ease;
-    -moz-transition:background 0.2s ease;
-    -o-transition:background 0.2s ease;
-    transition: all 0.15s;
-}
-
-
 .abortEditingButton {
     height: 50px;
     width: 4em;
@@ -790,8 +768,6 @@ opacity: 1;
 
 .saveEditedIdeaButton:hover {
     cursor: pointer;
-    height: 50px;
-    width: 4em;
     border: none;
     color: rgb(46, 46, 46);
     margin: 0px 15px;
@@ -802,6 +778,30 @@ opacity: 1;
     background-size: contain;
     background-repeat: no-repeat;
 transform: scale(1.14) ;
+transition: all 0.15s;
+opacity: 1;
+}
+
+.markCheckedButton {
+  height: 53px;
+  width: 4.1em;
+  background-color: rgb(243, 241, 240, 0.3);
+  border: none;
+  color: rgb(46, 46, 46);
+  margin: auto auto;
+  font-size: 0.5em;
+  opacity: 0.6;
+  outline: none;
+  background: url("../img/ziel.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.markCheckedButton:hover {
+    background: url("../img/ziel_color.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+transform: scale(1.14) ;
 -webkit-transition:background 0.2s ease;
 -moz-transition:background 0.2s ease;
 -o-transition:background 0.2s ease;
@@ -809,8 +809,23 @@ transition: all 0.15s;
 opacity: 1;
 }
 
-.markCheckedButton:hover {
-    background: url("../img/hakchen_green.png");
+.markUncheckedButton {
+  height: 53px;
+  width: 4.1em;
+  background-color: rgb(243, 241, 240, 0.3);
+  border: none;
+  color: rgb(46, 46, 46);
+  margin: auto auto;
+  font-size: 0.5em;
+  opacity: 0.6;
+  outline: none;
+  background: url("../img/arrow_bw.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.markUncheckedButton:hover {
+    background: url("../img/arrow_color.png");
     background-size: contain;
     background-repeat: no-repeat;
 transform: scale(1.14) ;
@@ -824,6 +839,12 @@ opacity: 1;
 .editButtonDiv {
     padding-top: 1.2em;
     padding-bottom: 0.8em;
+}
+
+.showIdeaButtonDiv {
+  padding-top: 0.5em;
+  margin: auto auto;
+  display: flex;
 }
     
 

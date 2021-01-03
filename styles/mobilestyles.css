@@ -34,25 +34,41 @@
         }
 
 .saveEditedIdeaButton {
-            opacity: 0.8;
+            opacity: 0.5;
             background: url("../img/hakchen.png");
             background-size: contain;
              background-repeat: no-repeat;
-             opacity: 0.7;
-        }   
+             z-index: 99;
+             width: 3em;
+             height: 3em;
+        }  
         
         .abortEditingButton {
+            width: 3em;
+            height: 3em;
             background: url("../img/arrow_bw.png");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.7;
+            opacity: 0.5;
         }
 
         .cancelEditedIdeaButton {
+            width: 3em;
+            height: 3em;
             background: url("../img/stornieren.png");
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.7;
+            opacity: 0.5;
+        }
+
+        .markUncheckedButton {
+            width: 3em;
+            height: 3em;
+        }
+
+        .markCheckedButton {
+            width: 3em;
+            height: 3em;
         }
 
     .ideaDivContainer {
