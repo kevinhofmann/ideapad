@@ -17,7 +17,12 @@ const getSavedIdeas = () => {
     }
 }
 
-let allIdeas = getSavedIdeas()
+let allIdeas = getSavedIdeas();
+
+//Takes the selected Idea Item out of the Ideas Array 
+let getIdeaItem = () => {
+    return allIdeas[globalVariables.ideaIndex];
+}
 
 //GRAB CSS ELEMENTS 
 const titleElement = document.querySelector("#idea-title")
@@ -49,8 +54,11 @@ const addNewInputButton = document.createElement("button")
 const emptyMessageElement = document.createElement("label");
 const emptyMessageElement2 = document.createElement("label");
 const breakElement = document.createElement("span");
+const lastEditedLabel = document.createElement("text");
+
 
 breakElement.innerHTML = "<br>"
+lastEditedLabel.className = "lastUpdatedIdeaItemLabel";
 emptyMessageElement.className = "emptyMessageElement";
 emptyMessageElement2.className = "emptyMessageElement";
 showIdeaDiv.className = "showIdeaDiv";
@@ -82,7 +90,10 @@ const ideaReasonLabel = document.createElement("label");
 ideaReasonLabel.classList.add("ideaLabels");
 const ideaStepTowardsLabel = document.createElement("label");
 ideaStepTowardsLabel.classList.add("ideaLabels");
-editStepTowardsInput.placeholder = "Talk to someone, make a plan, learn it"
+editReasonInput.placeholder = "What motivates you?";
+editDescriptionInput.placeholder = "Try to be specific"
+editStepTowardsInput.placeholder = "Which steps are neccessary?"
+editTitleInput.placeholder = "Find a short & simple title"
 
 const showIdeaTitle = document.createElement("text")
 showIdeaTitle.classList.add("showIdeaTextContent")
@@ -96,9 +107,9 @@ showIdeaReason.classList.add("showIdeaTextContent")
 //CREATE DOM FOR EDIT INTERFACE
 const constructEditInterfaceDOM = () => {
     ideaTitleLabel.innerHTML = ' Name your idea<br>';
-    ideaDescriptionLabel.innerHTML = "Describe it as preciesly as possible<br>";
+    ideaDescriptionLabel.innerHTML = "Describe it preciesly<br>";
     ideaReasonLabel.innerHTML = "Why do you want to pursue this idea?<br>";
-    ideaStepTowardsLabel.innerHTML = "Which little thing would bring you closer?"
+    ideaStepTowardsLabel.innerHTML = "Which actions will take you further?"
     editIdeaDiv.appendChild(ideaTitleLabel);
     editIdeaDiv.appendChild(editTitleInput);
     editIdeaDiv.appendChild(ideaDescriptionLabel);
@@ -119,6 +130,7 @@ const constructShowInterfaceDOM = (idea) => {
     ideaDescriptionLabel.innerHTML = "Description<br>";
     ideaReasonLabel.innerHTML = "Your Why<br>";
     ideaStepTowardsLabel.innerHTML = "Your next step"
+    showIdeaDiv.appendChild(lastEditedLabel)
     showIdeaDiv.appendChild(ideaDescriptionLabel)
     showIdeaDiv.appendChild(showIdeaDescription)
     showIdeaDiv.appendChild(ideaReasonLabel)
@@ -144,13 +156,14 @@ const constructShowInterfaceDOM = (idea) => {
 
 //IDEA CLASS AND CONSTRUCTOR
 class Idea {
-    constructor(id, title, description, reason, stepTowards = [], status = "progress") {
+    constructor(id, title, description, reason, stepTowards = [], status = "progress", lastUpdated) {
         this.id = id,
         this.title = title,
         this.description = description,
         this.reason = reason,
         this.stepTowards = stepTowards,
-        this.status = status
+        this.status = status,
+        this.lastUpdated = lastUpdated
     }
 }
 
@@ -179,7 +192,7 @@ const deleteIdea = function (deleteIdea) {
 
 
 const createIdea = () => {
-    const newIdea = new Idea(uuidv4(), titleElement.value, descriptionElement.value, reasonElement.value)
+    const newIdea = new Idea(uuidv4(), titleElement.value, descriptionElement.value, reasonElement.value, undefined, "progress", moment())
     allIdeas.push(newIdea)
     titleElement.value = ""
     descriptionElement.value = ""
@@ -199,6 +212,7 @@ const saveEditChangesForm = () => {
     allIdeas[globalVariables.ideaIndex].title = editTitleInput.value;
     allIdeas[globalVariables.ideaIndex].description = editDescriptionInput.value;
     allIdeas[globalVariables.ideaIndex].reason = editReasonInput.value;
+    allIdeas[globalVariables.ideaIndex].lastUpdated = moment();
     allIdeas[globalVariables.ideaIndex].stepTowards[0] = editStepTowardsInput.value;
     const newInputFields = document.querySelectorAll(".newInputDiv")
     if(newInputFields.length > 0) {
@@ -222,7 +236,14 @@ const abortChangesEditForm = () => {
     editTitleInput.value = allIdeas[globalVariables.ideaIndex].title
     editDescriptionInput.value = allIdeas[globalVariables.ideaIndex].description
     editReasonInput.value = allIdeas[globalVariables.ideaIndex].reason
-    editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards
+    editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards[0]
+    const addedInputElements = document.querySelectorAll(".addedInputField")
+    let element = getIdeaItem()
+    for(let i = 0; i<addedInputElements.length; i++) {
+        let number = i+1;
+        addedInputElements[i].value = element.stepTowards[number]
+        number++;
+    }
 }
 
 const markIdeaChecked = () => {
@@ -336,6 +357,7 @@ const showIdeaInterface = function (e, idea) {
         }
 
         showStepsTowardDiv.innerHTML = ""
+        
         if(idea.stepTowards.length === 0) {
             let showIdeaStepToward = document.createElement("text")
             showIdeaStepToward.textContent = "..."
@@ -347,13 +369,15 @@ const showIdeaInterface = function (e, idea) {
             idea.stepTowards.forEach(item => {
                 showIdeaStepToward = document.createElement("li");
                 showIdeaStepToward.className = "";
-                showIdeaStepToward.classList.add("showIdeaTextContent");
-                showIdeaStepToward.classList.add("stepsTowardsList");
+                showIdeaStepToward.className = "showIdeaTextContent stepsTowardsList";
+                //showIdeaStepToward.classList.add("stepsTowardsList");
                 showIdeaStepToward.innerHTML = idea.stepTowards[counter]
                 showStepsTowardDiv.appendChild(showIdeaStepToward)
                 counter++;
             })
+            showStepsTowardDiv.classList.add("showStepsTowardDiv")
         }
+        lastEditedLabel.textContent = "Last updated " + moment(idea.lastUpdated).fromNow()
         constructShowInterfaceDOM(idea)
         ideaDiv.insertBefore(showIdeaDiv, ideaDiv.childNodes[i])
 
@@ -476,19 +500,12 @@ const renderIdeas = function () {
         const buttonDiv = document.createElement("div")
         const editButton = document.createElement("button")
         editButton.setAttribute("title", "Edit idea");
-        buttonDiv.classList.add("buttonContainer")
-        editButton.classList.add("editButton")
+        buttonDiv.classList.add("buttonContainer");
+        editButton.classList.add("editButton");
 
         const newIdea = document.createElement("li");
         newIdea.innerText = idea.title;
         newIdea.classList.add("idea-item");
-
-        if(idea.status === "checked") {
-            ideaDivContainer.classList.add("checked")
-            newIdea.append(checkedIcon)
-        } else {
-            ideaDivContainer.classList.add("unchecked")
-        }
 
         newIdea.addEventListener("click", function (e) {
             showIdeaInterface(e, idea)
@@ -505,6 +522,13 @@ const renderIdeas = function () {
         ideaDivContainer.appendChild(newIdea)
         ideaDivContainer.appendChild(buttonDiv)
         ideaDiv.appendChild(ideaDivContainer)
+
+        if(idea.status === "checked") {
+            ideaDivContainer.classList.add("checked")
+            newIdea.appendChild(checkedIcon)
+        } else {
+            ideaDivContainer.classList.add("unchecked")
+        }
     })
     } else {
         emptyMessageElement.textContent = "Life is empty without inspiring ideas."

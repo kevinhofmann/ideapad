@@ -6,13 +6,13 @@
     }
 
     .emptyMessageElement {
-        font-size: 0.6em;
+        font-size: 0.7em;
         padding-top: 1em;
         font-family: 'Montserrat', sans-serif;
         font-weight: 100;
         line-height: 1.6em;
         opacity: 0.9;
-        color: rgb(36, 35, 35);
+        color: rgb(78, 78, 78);
     }
 
     .editButton {
@@ -137,6 +137,10 @@
       font-size: 0.55em;
       font-weight: 400;
       text-align: left;
+  }
+
+  .lastUpdatedIdeaItemLabel {
+      font-size: 0.4em;
   }
 
   .showIdeaTextContent {
