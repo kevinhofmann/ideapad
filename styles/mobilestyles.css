@@ -1,5 +1,9 @@
 @media screen and (max-width: 950px) {
 
+    html {
+        background: rgb(255,172,56);
+        background: linear-gradient(90deg, rgb(247, 163, 46) 40%, rgba(246,153,10,1) 51%, rgb(255, 165, 19) 60%);
+    }
 
     .emptyMessageElement {
         font-size: 0.6em;
@@ -71,6 +75,20 @@
             height: 3em;
         }
 
+.removeNewInputButton {
+    width: 2.5em;
+    margin-left: 0.5em;
+    margin-top: 1em;
+}
+
+.addNewInputButton {
+    width: 2.5em;
+    margin-left: 0.5em;
+    margin-top: 0.9em;
+}
+
+
+
     .ideaDivContainer {
         line-height: 1.4em;
         margin-top: 10px;
@@ -130,6 +148,7 @@
   .showIdeaDiv {
       padding-top: 0.1em;
       padding-left: 6%;
+      padding-right: 6%;
   }
 
   .editButtonDiv {
@@ -151,5 +170,5 @@
 
 .editIdeaDiv {
     padding-top: 0px !important;
-    padding: 0.7em;
+    padding: 0.5em;
 }

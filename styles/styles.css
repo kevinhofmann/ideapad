@@ -86,13 +86,11 @@ a:-webkit-any-link {
     font-weight: 400;
     -webkit-font-smoothing: subpixel-antialiased;
     backface-visibility: unset;
+    outline: none;
 }
 
 .input:hover {
     transform: scale(1.01) ;
-    -webkit-transition:background 0.2s ease;
-    -moz-transition:background 0.2s ease;
-    -o-transition:background 0.2s ease;
     transition: all 0.15s;
     transform: scale(1.003);
     box-shadow: 2px 2px 15px 0.8px rgba(97, 97, 97, 0.9);
@@ -361,9 +359,83 @@ a:-webkit-any-link {
 }
 
 .editButton-editing-mode {
-    transform: scale(1.2);
+    transform: scale(1.18) rotate(70deg);
     transition: all 0.35s;
     opacity: 1;
+}
+
+.addNewInputButton {
+  display: inline;
+  height: auto;
+  border: none;
+  margin-bottom: 1.5em;
+  margin-top: 1.8%;
+  outline: none;
+  width: 3em;
+  margin-left: 1em;
+  background: url("../img/addButton.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+.removeNewInputButton {
+  height: auto;
+  border: none;
+  margin-bottom: 1.5em;
+  margin-top: 2%;
+  outline: none;
+  width: 3em;
+  margin-left: 1em;
+  background: url("../img/minus.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+}
+
+.inputWithButton {
+  flex-grow: 2;
+  border: none;
+  width: 10% !important;
+}
+
+.addedInputField {
+  width: 90.5% !important;
+  margin-top: 0.5em;
+  height: 40px;
+  font-size: 0.65em;
+  opacity: 0.9;
+  color: rgb(46, 46, 46);
+  border: 1px white;
+  resize: none;
+  margin-bottom: 1.2em;
+  box-shadow: 1px 1px 15px 0.2px rgb(167, 167, 167, 0.4);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  outline: none;
+  padding-left: 1.6%;
+  padding-right: 0px !important;
+}
+
+.inputButtonContainer {
+  width: 100%;
+  height: auto;
+  display:flex;
+  flex-direction:row;
+  flex-wrap: wrap;
+}
+
+.newInputDiv {
+  height: auto;
+  display:flex;
+  flex-direction:row;
+  width: 100%;
+}
+
+.showStepsTowardDiv {
+  height: auto;
+  width: 100%;
+  margin-top: 0.5em;
 }
 
 .idea-form {
@@ -425,8 +497,8 @@ display: flex;
 }
 
 .checkedIcon {
-  height: 2em;
-  width: 2em;
+  height: 1.9em;
+  width: 1.9em;
   background-color: rgb(243, 241, 240, 0.3);
   border: none;
   color: rgb(46, 46, 46);
@@ -435,7 +507,7 @@ display: flex;
   margin-bottom: auto;
   margin-top: auto;
   font-size: 0.5em;
-  opacity: 0.6;
+  opacity: 0.5;
   outline: none;
   background: url("../img/hakchen_green.png");
   background-size: contain;
@@ -471,19 +543,19 @@ display: flex;
 
 .checked {
   background: rgb(169,246,10);
-background: linear-gradient(86deg, rgba(169,246,10,0.35) 35%, rgba(255,173,38,0) 80%);
+background: linear-gradient(86deg, rgba(169,246,10,0.25) 50%, rgba(255,173,38,0) 100%);
 }
 
 .checked:hover {
   background: rgb(8, 255, 50);
-    background: linear-gradient(169deg, rgba(146, 255, 113, 0.6) 38%, rgba(255,178,50,0.6) 97%);
+    background: linear-gradient(86deg, rgba(146, 255, 113, 0.5) 50%, rgba(255,178,50,0.6) 100%);
   }  
 
 .ideaLabels {
     color: rgb(46, 46, 46);
     opacity: 0.8;
     display: flex;
-    font-size: 0.68em;
+    font-size: 0.58em;
     margin-bottom: 5px;
     line-height: normal;
     margin-top: 2em;
@@ -502,9 +574,9 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 35%, rgba(255,173,38,0)
 
 .idea-item-editing-mode-checked {
   background: rgb(8, 255, 50);
-  background: linear-gradient(90deg, rgba(146, 255, 113, 0.6) 38%, rgba(255,178,50,0.6) 97%);
-  transform: scale(1.035) ;
-   box-shadow: 1px 1px 4px 1px rgb(167, 167, 167);
+  background: linear-gradient(90deg, rgba(146, 255, 113, 0.5) 50%, rgba(255,178,50,0.6) 100%);
+  transform: scale(1.015) ;
+   box-shadow: 1px 1px 4px 1px rgb(167, 167, 167, 0.7);
    transition: all 0.15s;
 }
 
@@ -552,13 +624,18 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 35%, rgba(255,173,38,0)
 
 .showIdeaTextContent {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.85em;
+  font-size: 0.75em;
   font-weight: 450;
   margin-bottom: 3em;
   color: rgb(46, 46, 46);
   opacity: 0.9;
   text-shadow: 1px 1px 25px rgb(167, 167, 167, 0.2);
   word-wrap: break-word;
+}
+
+.stepsTowardsList {
+  margin-bottom: 0.3em;
+  list-style-type: circle;
 }
 
 .showIdeaTextContent:hover {
