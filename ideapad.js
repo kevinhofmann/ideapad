@@ -4,7 +4,8 @@ let globalVariables = {
     editingIdea: "",
     ideaIndex: "",
     e: "",
-    idea: ""
+    idea: "",
+    deadlineSelection: ""
 }
 
 const getSavedIdeas = () => {
@@ -33,6 +34,7 @@ const ideaForm = document.querySelector(".idea-form")
 const ideaFormContainer = document.querySelector(".form-container")
 const ideaListContainer = document.querySelector(".idea-list-container")
 
+const deadlineDiv = document.createElement("div");
 const ideaDiv = document.createElement("div");
 const showIdeaDiv = document.createElement("div");
 const editIdeaDiv = document.createElement("div");
@@ -55,9 +57,28 @@ const emptyMessageElement = document.createElement("label");
 const emptyMessageElement2 = document.createElement("label");
 const breakElement = document.createElement("span");
 const lastEditedLabel = document.createElement("text");
-
+const deadlineLabel = document.createElement("label");
+const deadlineInputLabel = document.createElement("input")
+const deadlineSelector = document.createElement("select")
+deadlineInputLabel.setAttribute("disabled", "disabled")
+const offElement = document.createElement("option")
+const hourElement = document.createElement("option")
+const dayElement = document.createElement("option")
+const weekElement = document.createElement("option")
+offElement.text = "off"
+hourElement.text = "hours"
+dayElement.text = "days"
+weekElement.text = "weeks"
+deadlineSelector.options.add(offElement, 0)
+deadlineSelector.options.add(hourElement, 1)
+deadlineSelector.options.add(dayElement, 2)
+deadlineSelector.options.add(weekElement, 3)
 
 breakElement.innerHTML = "<br>"
+deadlineSelector.classList.add("deadlineSelector");
+deadlineInputLabel.classList.add("deadlineInputLabel");
+deadlineInputLabel.setAttribute("maxlength", "3")
+deadlineLabel.classList.add("deadlineLabel")
 lastEditedLabel.className = "lastUpdatedIdeaItemLabel";
 emptyMessageElement.className = "emptyMessageElement";
 emptyMessageElement2.className = "emptyMessageElement";
@@ -73,6 +94,7 @@ abortChangesButton.setAttribute("title", "Reset changes");
 cancelIdeaButton.classList.add("cancelEditedIdeaButton");
 cancelIdeaButton.setAttribute("title", "Remove idea");
 editTitleInput.classList.add("editIdeaInput");
+editTitleInput.setAttribute("maxlength", "50")
 editDescriptionInput.classList.add("editIdeaInput")
 editDescriptionInput.classList.add("textareaInput");
 editReasonInput.classList.add("editIdeaInput");
@@ -81,6 +103,7 @@ editButtonDiv.classList.add("editButtonDiv");
 showIdeaButtonDiv.classList.add("showIdeaButtonDiv");
 addNewInputButton.classList.add("addNewInputButton");
 showStepsTowardDiv.classList.add("showStepsTowardDiv");
+deadlineDiv.classList.add("deadlineDiv");
 
 const ideaTitleLabel = document.createElement("span");
 ideaTitleLabel.classList.add("ideaLabels")
@@ -90,6 +113,8 @@ const ideaReasonLabel = document.createElement("label");
 ideaReasonLabel.classList.add("ideaLabels");
 const ideaStepTowardsLabel = document.createElement("label");
 ideaStepTowardsLabel.classList.add("ideaLabels");
+const ideaDeadlineLabel = document.createElement("label");
+ideaDeadlineLabel.classList.add("ideaLabels");
 editReasonInput.placeholder = "What motivates you?";
 editDescriptionInput.placeholder = "Try to be specific"
 editStepTowardsInput.placeholder = "Which steps are neccessary?"
@@ -110,6 +135,8 @@ const constructEditInterfaceDOM = () => {
     ideaDescriptionLabel.innerHTML = "Describe it preciesly<br>";
     ideaReasonLabel.innerHTML = "Why do you want to pursue this idea?<br>";
     ideaStepTowardsLabel.innerHTML = "Which actions will take you further?"
+    ideaDeadlineLabel.innerHTML = "When do you want to be finished?"
+    editIdeaDiv.appendChild(lastEditedLabel);
     editIdeaDiv.appendChild(ideaTitleLabel);
     editIdeaDiv.appendChild(editTitleInput);
     editIdeaDiv.appendChild(ideaDescriptionLabel);
@@ -118,6 +145,10 @@ const constructEditInterfaceDOM = () => {
     editIdeaDiv.appendChild(editReasonInput);
     editIdeaDiv.appendChild(ideaStepTowardsLabel);
     editIdeaDiv.appendChild(inputButtonContainer);
+    editIdeaDiv.appendChild(ideaDeadlineLabel)
+    editIdeaDiv.appendChild(deadlineInputLabel);
+    editIdeaDiv.appendChild(deadlineSelector);
+    editIdeaDiv.appendChild(deadlineLabel);
     editButtonDiv.appendChild(saveChangesButton);
     editButtonDiv.appendChild(abortChangesButton);
     editButtonDiv.appendChild(cancelIdeaButton);
@@ -128,9 +159,9 @@ const constructEditInterfaceDOM = () => {
 const constructShowInterfaceDOM = (idea) => {
     showIdeaDiv.remove()
     ideaDescriptionLabel.innerHTML = "Description<br>";
-    ideaReasonLabel.innerHTML = "Your Why<br>";
-    ideaStepTowardsLabel.innerHTML = "Your next step"
-    showIdeaDiv.appendChild(lastEditedLabel)
+    ideaReasonLabel.innerHTML = "Why<br>";
+    ideaStepTowardsLabel.innerHTML = "Action steps"
+    //showIdeaDiv.appendChild(lastEditedLabel)
     showIdeaDiv.appendChild(ideaDescriptionLabel)
     showIdeaDiv.appendChild(showIdeaDescription)
     showIdeaDiv.appendChild(ideaReasonLabel)
@@ -138,16 +169,16 @@ const constructShowInterfaceDOM = (idea) => {
     showIdeaDiv.appendChild(ideaStepTowardsLabel)
     showIdeaDiv.appendChild(showStepsTowardDiv)
     showIdeaButtonDiv.remove();
-    if(idea.status === "progress") {
+    if (idea.status === "progress") {
         showIdeaButtonDiv.appendChild(markCheckedButton)
         showIdeaDiv.appendChild(showIdeaButtonDiv)
-        if(showIdeaButtonDiv.contains(markUncheckedButton)) {
+        if (showIdeaButtonDiv.contains(markUncheckedButton)) {
             markUncheckedButton.remove()
         }
-    } else if(idea.status === "checked") {
+    } else if (idea.status === "checked") {
         showIdeaButtonDiv.appendChild(markUncheckedButton)
         showIdeaDiv.appendChild(showIdeaButtonDiv)
-        if(showIdeaButtonDiv.contains(markCheckedButton)) {
+        if (showIdeaButtonDiv.contains(markCheckedButton)) {
             markCheckedButton.remove()
         }
     }
@@ -156,14 +187,16 @@ const constructShowInterfaceDOM = (idea) => {
 
 //IDEA CLASS AND CONSTRUCTOR
 class Idea {
-    constructor(id, title, description, reason, stepTowards = [], status = "progress", lastUpdated) {
+    constructor(id, title, description, reason, stepTowards = [], status = "progress", lastUpdated, createdAt, deadline) {
         this.id = id,
-        this.title = title,
-        this.description = description,
-        this.reason = reason,
-        this.stepTowards = stepTowards,
-        this.status = status,
-        this.lastUpdated = lastUpdated
+            this.title = title,
+            this.description = description,
+            this.reason = reason,
+            this.stepTowards = stepTowards,
+            this.status = status,
+            this.lastUpdated = lastUpdated,
+            this.createdAt = createdAt,
+            this.deadline = deadline
     }
 }
 
@@ -192,57 +225,71 @@ const deleteIdea = function (deleteIdea) {
 
 
 const createIdea = () => {
-    const newIdea = new Idea(uuidv4(), titleElement.value, descriptionElement.value, reasonElement.value, undefined, "progress", moment())
+    const newIdea = new Idea(uuidv4(), titleElement.value, descriptionElement.value, reasonElement.value, undefined, "progress", moment(), moment())
     allIdeas.push(newIdea)
     titleElement.value = ""
     descriptionElement.value = ""
     reasonElement.value = ""
-    ideaFormContainer.className = "form-container"
+    ideaFormContainer.className = "form-container\:hide"
     alertify.success("Idea added")
     saveIdeas(allIdeas)
-    renderIdeas()
+    setTimeout(() => { showIdeaDiv.className = "form-container"; renderIdeas(); }, 200);
 }
 
 
 //EVENT HANDLER EDIT FORM
 const saveEditChangesForm = () => {
-
+    let ideaItem = getIdeaItem();
     let newArray = [];
-    if(globalVariables.e.target.parentElement.parentElement.firstChild.innerText === allIdeas[globalVariables.ideaIndex].title) {
-    allIdeas[globalVariables.ideaIndex].title = editTitleInput.value;
-    allIdeas[globalVariables.ideaIndex].description = editDescriptionInput.value;
-    allIdeas[globalVariables.ideaIndex].reason = editReasonInput.value;
-    allIdeas[globalVariables.ideaIndex].lastUpdated = moment();
-    allIdeas[globalVariables.ideaIndex].stepTowards[0] = editStepTowardsInput.value;
+
+    ideaItem.title = editTitleInput.value;
+    ideaItem.description = editDescriptionInput.value;
+    ideaItem.reason = editReasonInput.value;
+    ideaItem.lastUpdated = moment();
+    ideaItem.stepTowards[0] = editStepTowardsInput.value;
+    console.log(deadlineInputLabel.value)
+    if (deadlineInputLabel.value > 0) {
+        ideaItem.deadline = moment().add(deadlineInputLabel.value, globalVariables.deadlineSelection)
+    }
     const newInputFields = document.querySelectorAll(".newInputDiv")
-    if(newInputFields.length > 0) {
+    if (newInputFields.length > 0) {
         newArray.push(editStepTowardsInput.value)
         newInputFields.forEach(input => {
             newArray.push(input.firstChild.value)
         })
-    allIdeas[globalVariables.ideaIndex].stepTowards = newArray;
+        ideaItem.stepTowards = newArray;
     }
     saveIdeas(allIdeas);
-    if(allIdeas[globalVariables.ideaIndex].status === "checked") {
+    if (ideaItem.status === "checked") {
         ideaDiv.childNodes[globalVariables.ideaIndex].firstChild.innerHTML = editTitleInput.value + "<button class='checkedIcon'></button>";
     } else {
         ideaDiv.childNodes[globalVariables.ideaIndex].firstChild.innerHTML = editTitleInput.value
     }
+    editIdeaDiv.classList.add("editIdeaDiv:hide")
+    setTimeout(() => { editIdeaDiv.className = ""; editIdeaDiv.remove(); renderIdeas() }, 450);
     alertify.success("Changes successfully saved")
-    }
 }
 
 const abortChangesEditForm = () => {
-    editTitleInput.value = allIdeas[globalVariables.ideaIndex].title
-    editDescriptionInput.value = allIdeas[globalVariables.ideaIndex].description
-    editReasonInput.value = allIdeas[globalVariables.ideaIndex].reason
-    editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards[0]
-    const addedInputElements = document.querySelectorAll(".addedInputField")
-    let element = getIdeaItem()
-    for(let i = 0; i<addedInputElements.length; i++) {
-        let number = i+1;
-        addedInputElements[i].value = element.stepTowards[number]
+    let ideaItem = getIdeaItem();
+    editTitleInput.value = ideaItem.title;
+    editDescriptionInput.value = ideaItem.description;
+    editReasonInput.value = ideaItem.reason;
+    editStepTowardsInput.value = ideaItem.stepTowards[0];
+    const addedInputElements = document.querySelectorAll(".addedInputField");
+    for (let i = 0; i < addedInputElements.length; i++) {
+        let number = i + 1;
+        console.log(ideaItem.stepTowards[number])
+        addedInputElements[i].value = ideaItem.stepTowards[number];
+        if (ideaItem.stepTowards[number] === undefined) {
+            addedInputElements[i].value = "";
+        }
         number++;
+    }
+    if (ideaItem.deadline != undefined) {
+        deadlineInputLabel.style.display = "inline";
+        deadlineSelector.style.display = "inline";
+        deadlineLabel.style.display = "none";
     }
 }
 
@@ -251,7 +298,8 @@ const markIdeaChecked = () => {
     allIdeas[globalVariables.ideaIndex].status = "checked"
     alertify.success("Congratulations, you've made it!")
     saveIdeas(allIdeas)
-    renderIdeas()
+    showIdeaDiv.classList.add("showIdeaDiv:hide")
+    setTimeout(() => { showIdeaDiv.className = ""; renderIdeas(); showIdeaDiv.remove(); }, 450);
 }
 
 const markIdeaUnchecked = () => {
@@ -259,19 +307,21 @@ const markIdeaUnchecked = () => {
     allIdeas[globalVariables.ideaIndex].status = "progress"
     alertify.message("Completion revoked, keep on!")
     saveIdeas(allIdeas)
-    renderIdeas()
+    showIdeaDiv.classList.add("showIdeaDiv:hide")
+    setTimeout(() => { showIdeaDiv.className = ""; renderIdeas(); showIdeaDiv.remove(); }, 450);
 }
 
 markCheckedButton.addEventListener("click", markIdeaChecked);
 markUncheckedButton.addEventListener("click", markIdeaUnchecked);
 
 const cancelIdea = () => {
-    alertify.confirm("Sure?", "Do you really want to remove this idea from your list?", function() {
+    alertify.confirm("Sure?", "Do you really want to remove this idea from your list?", function () {
         allIdeas.splice(globalVariables.ideaIndex, 1);
-    saveIdeas(allIdeas);
-    renderIdeas();
-        alertify.message("Idea removed") }
-        , function() {
+        saveIdeas(allIdeas);
+        renderIdeas();
+        alertify.message("Idea removed")
+    }
+        , function () {
             alertify.message("Aborted")
         }
     )
@@ -318,20 +368,32 @@ const emptyDivElement = (div) => {
 //SHOW IDEA INTERFACE
 const showIdeaInterface = function (e, idea) {
     let checkIfOpen = true;
+    let toggledOpacity = false;
+    const editIdea = document.querySelector(".editIdeaDiv")
+    if (editIdea != null) {
+        editIdea.className = "";
+        editIdea.remove();
+        document.querySelector(".editButton-editing-mode").classList.remove("editButton-editing-mode")
+        toggledOpacity = true;
+
+    }
 
     //activate Opacity and highlighting for selected item
-    toggleOpacity(e)
-    if(e.target.parentElement.classList.contains("checked")) {
-        e.target.parentElement.classList.add("idea-item-editing-mode-checked")
-    } else {
-    e.target.parentElement.classList.toggle("idea-item-editing-mode")
+    if (!toggledOpacity) {
+        toggleOpacity(e)
+        if (e.target.parentElement.classList.contains("checked")) {
+            e.target.parentElement.classList.add("idea-item-editing-mode-checked")
+        } else {
+            e.target.parentElement.classList.toggle("idea-item-editing-mode")
+        }
     }
+
     ideaDiv.childNodes.forEach(node => {
         if (node.className === "showIdeaDiv") {
             checkIfOpen = false;
             e.target.parentElement.classList.remove("idea-item-editing-mode-checked")
             showIdeaDiv.classList.add("showIdeaDiv:hide")
-        setTimeout(() => { showIdeaDiv.className = ""; showIdeaDiv.remove(); }, 450);
+            setTimeout(() => { showIdeaDiv.className = ""; showIdeaDiv.remove(); }, 450);
         }
     })
     if (checkIfOpen) {
@@ -344,40 +406,40 @@ const showIdeaInterface = function (e, idea) {
         showIdeaTitle.textContent = idea.title
         showIdeaDescription.textContent = idea.description
         showIdeaReason.textContent = idea.reason
-        if(idea.description.length < 1) {
+        if (idea.description.length < 1) {
             showIdeaDescription.textContent = "..."
         } else {
             showIdeaDescription.textContent = idea.description
         }
 
-        if(idea.reason.length < 1) {
+        if (idea.reason.length < 1) {
             showIdeaReason.textContent = "..."
         } else {
             showIdeaReason.textContent = idea.reason
         }
 
         showStepsTowardDiv.innerHTML = ""
-        
-        if(idea.stepTowards.length === 0) {
+
+        if (idea.stepTowards.length === 0 || idea.stepTowards[0].length === 0) {
             let showIdeaStepToward = document.createElement("text")
             showIdeaStepToward.textContent = "..."
             showStepsTowardDiv.appendChild(showIdeaStepToward)
             showStepsTowardDiv.classList.remove("showStepsTowardDiv")
             showIdeaStepToward.className = "showIdeaTextContent"
         } else {
+            console.log(idea.stepTowards[0].length)
+            console.log(idea.stepTowards.length)
             let counter = 0;
             idea.stepTowards.forEach(item => {
                 showIdeaStepToward = document.createElement("li");
                 showIdeaStepToward.className = "";
                 showIdeaStepToward.className = "showIdeaTextContent stepsTowardsList";
-                //showIdeaStepToward.classList.add("stepsTowardsList");
                 showIdeaStepToward.innerHTML = idea.stepTowards[counter]
                 showStepsTowardDiv.appendChild(showIdeaStepToward)
                 counter++;
             })
             showStepsTowardDiv.classList.add("showStepsTowardDiv")
         }
-        lastEditedLabel.textContent = "Last updated " + moment(idea.lastUpdated).fromNow()
         constructShowInterfaceDOM(idea)
         ideaDiv.insertBefore(showIdeaDiv, ideaDiv.childNodes[i])
 
@@ -426,10 +488,10 @@ const editIdeaInterface = function (e, editedIdea) {
     globalVariables.e = e;
 
     let interfaceOpen = checkIfInterfaceOpen()
-    if(!interfaceOpen) {
+    if (!interfaceOpen) {
         toggleOpacity(e)
     }
-     //HIER MUSS ICH AUCH NOCH SO MACHEN WIE ITEM EDITRING MODE
+    //HIER MUSS ICH AUCH NOCH SO MACHEN WIE ITEM EDITRING MODE
 
     //Check if edit-form is already opened. If so, remove it to not duplicate it. Otherwise, nothing was opend, so it can be openend
     if (!e.target.classList.contains("editButton-editing-mode")) {
@@ -442,39 +504,53 @@ const editIdeaInterface = function (e, editedIdea) {
         saveChangesButton.removeEventListener("click", saveEditChangesForm);
         setTimeout(() => { editIdeaDiv.className = ""; editIdeaDiv.remove(); }, 450);
     } else {
-        if(editedIdea.status === "checked") {
+        if (editedIdea.status === "checked") {
             ideaDiv.childNodes[globalVariables.ideaIndex].classList.add("idea-item-editing-mode-checked")
         } else {
             ideaDiv.childNodes[globalVariables.ideaIndex].classList.add("idea-item-editing-mode")
         }
-        
+
         editIdeaDiv.className = "editIdeaDiv";
         emptyDivElement(editButtonDiv);
 
         editTitleInput.value = allIdeas[globalVariables.ideaIndex].title
         editDescriptionInput.value = allIdeas[globalVariables.ideaIndex].description
         editReasonInput.value = allIdeas[globalVariables.ideaIndex].reason
-        if(allIdeas[globalVariables.ideaIndex].stepTowards[0] === undefined) {
+        if (allIdeas[globalVariables.ideaIndex].stepTowards[0] === undefined) {
             editStepTowardsInput.value = ""
         } else {
-        editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards[0]
+            editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards[0]
         }
+        inputButtonContainer.innerHTML = "";
         inputButtonContainer.classList.add("inputButtonContainer")
         inputButtonContainer.appendChild(editStepTowardsInput)
         editStepTowardsInput.classList.add("inputWithButton")
         inputButtonContainer.append(addNewInputButton)
 
-        if(allIdeas[globalVariables.ideaIndex].stepTowards.length > 1) {
+        if (allIdeas[globalVariables.ideaIndex].stepTowards.length > 1) {
             for (let i = 1; i < allIdeas[globalVariables.ideaIndex].stepTowards.length; i++) {
-                    showNewInput(allIdeas[globalVariables.ideaIndex].stepTowards[i])
+                showNewInput(allIdeas[globalVariables.ideaIndex].stepTowards[i])
             }
+        }
+
+
+        if (editedIdea.deadline != undefined) {
+            console.log(editedIdea.deadline)
+            deadlineInputLabel.style.display = "none";
+            deadlineSelector.style.display = "none";
+            deadlineLabel.style.display = "inline";
+            deadlineLabel.textContent = moment().to(editedIdea.deadline);
+        } else {
+            deadlineLabel.style.display = "none";
+            deadlineInputLabel.style.display = "inline";
+            deadlineSelector.style.display = "inline";
         }
 
         saveChangesButton.addEventListener("click", saveEditChangesForm);
         abortChangesButton.addEventListener("click", abortChangesEditForm);
-        cancelIdeaButton.addEventListener("click", cancelIdea); 
+        cancelIdeaButton.addEventListener("click", cancelIdea);
         constructEditInterfaceDOM()
-
+        lastEditedLabel.textContent = "Last updated " + moment(editedIdea.lastUpdated).fromNow()
         const i = globalVariables.ideaIndex + 1
         ideaDiv.insertBefore(editIdeaDiv, ideaDiv.childNodes[i])
 
@@ -491,48 +567,55 @@ const renderIdeas = function () {
     ideaDiv.innerHTML = ""
     ideaListElement.innerHTML = ""
     ideaDiv.classList.add("idea-div");
-    if(allIdeas.length > 0) {
-    allIdeas.forEach((idea) => {
-        const checkedIcon = document.createElement("button")
-        checkedIcon.classList.add("checkedIcon")
-        const ideaDivContainer = document.createElement("div")
-        ideaDivContainer.classList.add("ideaDivContainer")
-        const buttonDiv = document.createElement("div")
-        const editButton = document.createElement("button")
-        editButton.setAttribute("title", "Edit idea");
-        buttonDiv.classList.add("buttonContainer");
-        editButton.classList.add("editButton");
+    if (allIdeas.length > 0) {
+        allIdeas.forEach((idea) => {
+            let timeRemainingLabel = document.createElement("label");
+            timeRemainingLabel.classList.add("timeRemainingLabel");
+            const checkedIcon = document.createElement("button")
+            checkedIcon.classList.add("checkedIcon")
+            const ideaDivContainer = document.createElement("div")
+            ideaDivContainer.classList.add("ideaDivContainer")
+            const buttonDiv = document.createElement("div")
+            const editButton = document.createElement("button")
+            editButton.setAttribute("title", "Edit idea");
+            buttonDiv.classList.add("buttonContainer");
+            editButton.classList.add("editButton");
 
-        const newIdea = document.createElement("li");
-        newIdea.innerText = idea.title;
-        newIdea.classList.add("idea-item");
+            timeRemainingLabel.textContent = "Deadline " + moment().to(idea.deadline);
 
-        newIdea.addEventListener("click", function (e) {
-            showIdeaInterface(e, idea)
+            const newIdea = document.createElement("li");
+            newIdea.innerText = idea.title;
+            newIdea.classList.add("idea-item");
+
+            newIdea.addEventListener("click", function (e) {
+                showIdeaInterface(e, idea)
+            })
+
+            editButton.addEventListener("click", function (e) {
+                e.preventDefault()
+                editButton.classList.toggle("editButton-editing-mode")
+                //newIdea.classList.toggle("notClickable")
+                editIdeaInterface(e, idea)
+            })
+
+            buttonDiv.appendChild(editButton)
+            if(idea.deadline != undefined) {
+            newIdea.appendChild(timeRemainingLabel)
+            }
+            ideaDivContainer.appendChild(newIdea)
+            ideaDivContainer.appendChild(buttonDiv)
+            ideaDiv.appendChild(ideaDivContainer)
+
+            if (idea.status === "checked") {
+                ideaDivContainer.classList.add("checked")
+                newIdea.appendChild(checkedIcon)
+            } else {
+                ideaDivContainer.classList.add("unchecked")
+            }
         })
-
-        editButton.addEventListener("click", function (e) {
-            e.preventDefault()
-            editButton.classList.toggle("editButton-editing-mode")
-            newIdea.classList.toggle("notClickable")
-            editIdeaInterface(e, idea)
-        })
-
-        buttonDiv.appendChild(editButton)
-        ideaDivContainer.appendChild(newIdea)
-        ideaDivContainer.appendChild(buttonDiv)
-        ideaDiv.appendChild(ideaDivContainer)
-
-        if(idea.status === "checked") {
-            ideaDivContainer.classList.add("checked")
-            newIdea.appendChild(checkedIcon)
-        } else {
-            ideaDivContainer.classList.add("unchecked")
-        }
-    })
     } else {
         emptyMessageElement.textContent = "Life is empty without inspiring ideas."
-        emptyMessageElement2.textContent =  "Add one above and start transforming it into reality!"
+        emptyMessageElement2.textContent = "Add one above and start transforming it into reality!"
         ideaDiv.appendChild(breakElement)
         ideaDiv.appendChild(emptyMessageElement)
         ideaDiv.appendChild(emptyMessageElement2)
@@ -553,8 +636,31 @@ document.querySelector("#addNewIdeaButton").addEventListener("click", function (
 document.querySelector("#forgetNewIdeaButton").addEventListener("click", function (e) {
     e.preventDefault()
     titleElement.value = ""
-    ideaFormContainer.className = "form-container"
+    ideaFormContainer.className = "form-container:hide"
+    setTimeout(() => { showIdeaDiv.className = "form-container"; renderIdeas(); }, 200);
 })
+
+deadlineSelector.addEventListener("change", function (e) {
+    globalVariables.deadlineSelection = e.target.value
+    if (e.target.value === "off") {
+        deadlineInputLabel.value = ""
+        deadlineInputLabel.setAttribute("disabled", "disabled")
+        deadlineInputLabel.removeAttribute("placeholder")
+    } else {
+        deadlineInputLabel.disabled = false
+        deadlineInputLabel.setAttribute("placeholder", "in X")
+    }
+})
+
+const checkDeadlineInput = (e) => {
+    let input = e.charCode
+    console.log(input)
+    if (input < 46 || input > 57) {
+        e.preventDefault()
+        alertify.message("Please enter a number")
+    }
+}
+deadlineInputLabel.addEventListener("keypress", checkDeadlineInput, false)
 
 //EVENT LISTENER INPUT
 document.querySelector("#idea-title").addEventListener("keydown", (e) => {

@@ -159,6 +159,10 @@
       padding-top: 10px;
   }
 
+  .addedInputField {
+    font-size: 0.55em;
+  }
+
 #addNewIdeaButton {
     height: 40px;
 }
