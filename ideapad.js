@@ -5,7 +5,8 @@ let globalVariables = {
     ideaIndex: "",
     e: "",
     idea: "",
-    deadlineSelection: ""
+    deadlineSelection: "",
+    sortBy: "by creation date"
 }
 
 const getSavedIdeas = () => {
@@ -33,6 +34,7 @@ const ideaListElement = document.querySelector("#idea-list")
 const ideaForm = document.querySelector(".idea-form")
 const ideaFormContainer = document.querySelector(".form-container")
 const ideaListContainer = document.querySelector(".idea-list-container")
+const ideaListSettings = document.querySelector("#idea-list-settings")
 
 const deadlineDiv = document.createElement("div");
 const ideaDiv = document.createElement("div");
@@ -47,6 +49,8 @@ const editStepTowardsInput = document.createElement("input");
 const editButtonDiv = document.createElement("div");
 const showIdeaButtonDiv = document.createElement("div");
 const showStepsTowardDiv = document.createElement("div");
+const showTimeRemainingLabel = document.createElement("label");
+const showTimeRemaining = document.createElement("label");
 const markCheckedButton = document.createElement("button");
 const markUncheckedButton = document.createElement("button");
 const abortChangesButton = document.createElement("button");
@@ -57,6 +61,7 @@ const emptyMessageElement = document.createElement("label");
 const emptyMessageElement2 = document.createElement("label");
 const breakElement = document.createElement("span");
 const lastEditedLabel = document.createElement("text");
+const createdAtLabel = document.createElement("text");
 const deadlineLabel = document.createElement("label");
 const deadlineInputLabel = document.createElement("input")
 const deadlineSelector = document.createElement("select")
@@ -73,13 +78,32 @@ deadlineSelector.options.add(offElement, 0)
 deadlineSelector.options.add(hourElement, 1)
 deadlineSelector.options.add(dayElement, 2)
 deadlineSelector.options.add(weekElement, 3)
+const prioritySelector = document.createElement("button")
+const prioritySelectorLabel = document.createElement("label")
+const sortIdeasSelector = document.createElement("select")
+const sortByDeadline = document.createElement("option")
+sortByDeadline.text = "by deadline"
+const sortByCreationDate = document.createElement("option")
+sortByCreationDate.text = "by creation date"
+const sortByPriority = document.createElement("option")
+sortByPriority.text = "by priority"
+sortIdeasSelector.options.add(sortByCreationDate, 0)
+sortIdeasSelector.options.add(sortByDeadline, 1)
+sortIdeasSelector.options.add(sortByPriority, 2)
+sortIdeasSelector.classList.add("sortIdeasSelector")
+const sortIdeasSelectorLabel = document.createElement("label")
+sortIdeasSelectorLabel.textContent = "Sort "
 
 breakElement.innerHTML = "<br>"
+showTimeRemainingLabel.classList.add("ideaLabels");
+sortIdeasSelectorLabel.classList.add("sortIdeasSelectorLabel")
+showTimeRemaining.classList.add("showIdeaTextContent");
 deadlineSelector.classList.add("deadlineSelector");
 deadlineInputLabel.classList.add("deadlineInputLabel");
 deadlineInputLabel.setAttribute("maxlength", "3")
 deadlineLabel.classList.add("deadlineLabel")
 lastEditedLabel.className = "lastUpdatedIdeaItemLabel";
+createdAtLabel.className = "lastUpdatedIdeaItemLabel";
 emptyMessageElement.className = "emptyMessageElement";
 emptyMessageElement2.className = "emptyMessageElement";
 showIdeaDiv.className = "showIdeaDiv";
@@ -90,7 +114,7 @@ markCheckedButton.setAttribute("title", "Mark idea completed");
 saveChangesButton.classList.add("saveEditedIdeaButton");
 saveChangesButton.setAttribute("title", "Save changes");
 abortChangesButton.classList.add("abortEditingButton");
-abortChangesButton.setAttribute("title", "Reset changes");
+abortChangesButton.setAttribute("title", "Reset and edit due date");
 cancelIdeaButton.classList.add("cancelEditedIdeaButton");
 cancelIdeaButton.setAttribute("title", "Remove idea");
 editTitleInput.classList.add("editIdeaInput");
@@ -104,6 +128,14 @@ showIdeaButtonDiv.classList.add("showIdeaButtonDiv");
 addNewInputButton.classList.add("addNewInputButton");
 showStepsTowardDiv.classList.add("showStepsTowardDiv");
 deadlineDiv.classList.add("deadlineDiv");
+prioritySelector.classList.add("priorityChangeButton");
+prioritySelectorLabel.classList.add("prioritySelectorLabel");
+prioritySelectorLabel.textContent = "Priority";
+
+const sortIdeasSelectorDiv = document.createElement("div")
+sortIdeasSelectorDiv.classList.add("sortIdeasSelectorDiv")
+sortIdeasSelectorDiv.appendChild(sortIdeasSelectorLabel)
+sortIdeasSelectorDiv.appendChild(sortIdeasSelector)
 
 const ideaTitleLabel = document.createElement("span");
 ideaTitleLabel.classList.add("ideaLabels")
@@ -136,6 +168,8 @@ const constructEditInterfaceDOM = () => {
     ideaReasonLabel.innerHTML = "Why do you want to pursue this idea?<br>";
     ideaStepTowardsLabel.innerHTML = "Which actions will take you further?"
     ideaDeadlineLabel.innerHTML = "When do you want to be finished?"
+    //editIdeaDiv.appendChild(prioritySelectorLabel);
+    editIdeaDiv.appendChild(prioritySelector);
     editIdeaDiv.appendChild(lastEditedLabel);
     editIdeaDiv.appendChild(ideaTitleLabel);
     editIdeaDiv.appendChild(editTitleInput);
@@ -157,17 +191,23 @@ const constructEditInterfaceDOM = () => {
 
 
 const constructShowInterfaceDOM = (idea) => {
-    showIdeaDiv.remove()
+    showIdeaDiv.innerHTML = "";
+    showIdeaDiv.remove();
     ideaDescriptionLabel.innerHTML = "Description<br>";
     ideaReasonLabel.innerHTML = "Why<br>";
-    ideaStepTowardsLabel.innerHTML = "Action steps"
-    //showIdeaDiv.appendChild(lastEditedLabel)
-    showIdeaDiv.appendChild(ideaDescriptionLabel)
-    showIdeaDiv.appendChild(showIdeaDescription)
-    showIdeaDiv.appendChild(ideaReasonLabel)
-    showIdeaDiv.appendChild(showIdeaReason)
-    showIdeaDiv.appendChild(ideaStepTowardsLabel)
-    showIdeaDiv.appendChild(showStepsTowardDiv)
+    ideaStepTowardsLabel.innerHTML = "Action steps";
+    showTimeRemainingLabel.innerHTML = "Due date"
+    showIdeaDiv.appendChild(createdAtLabel);
+    showIdeaDiv.appendChild(ideaDescriptionLabel);
+    showIdeaDiv.appendChild(showIdeaDescription);
+    showIdeaDiv.appendChild(ideaReasonLabel);
+    showIdeaDiv.appendChild(showIdeaReason);
+    showIdeaDiv.appendChild(ideaStepTowardsLabel);
+    showIdeaDiv.appendChild(showStepsTowardDiv);
+    if (idea.deadline != undefined) {
+        showIdeaDiv.appendChild(showTimeRemainingLabel);
+        showIdeaDiv.appendChild(showTimeRemaining);
+    }
     showIdeaButtonDiv.remove();
     if (idea.status === "progress") {
         showIdeaButtonDiv.appendChild(markCheckedButton)
@@ -187,7 +227,7 @@ const constructShowInterfaceDOM = (idea) => {
 
 //IDEA CLASS AND CONSTRUCTOR
 class Idea {
-    constructor(id, title, description, reason, stepTowards = [], status = "progress", lastUpdated, createdAt, deadline) {
+    constructor(id, title, description, reason, stepTowards = [], status = "progress", lastUpdated, createdAt, deadline, priority) {
         this.id = id,
             this.title = title,
             this.description = description,
@@ -196,7 +236,8 @@ class Idea {
             this.status = status,
             this.lastUpdated = lastUpdated,
             this.createdAt = createdAt,
-            this.deadline = deadline
+            this.deadline = deadline,
+            this.priority = priority
     }
 }
 
@@ -225,7 +266,7 @@ const deleteIdea = function (deleteIdea) {
 
 
 const createIdea = () => {
-    const newIdea = new Idea(uuidv4(), titleElement.value, descriptionElement.value, reasonElement.value, undefined, "progress", moment(), moment())
+    const newIdea = new Idea(uuidv4(), titleElement.value, descriptionElement.value, reasonElement.value, undefined, "progress", moment(), moment(), undefined, "0")
     allIdeas.push(newIdea)
     titleElement.value = ""
     descriptionElement.value = ""
@@ -247,8 +288,18 @@ const saveEditChangesForm = () => {
     ideaItem.reason = editReasonInput.value;
     ideaItem.lastUpdated = moment();
     ideaItem.stepTowards[0] = editStepTowardsInput.value;
-    console.log(deadlineInputLabel.value)
-    if (deadlineInputLabel.value > 0) {
+    console.log(globalVariables.deadlineSelection)
+    if (prioritySelector.classList.contains("priority1")) {
+        ideaItem.priority = "1";
+    } else if (prioritySelector.classList.contains("priority2")) {
+        ideaItem.priority = "2";
+    } else {
+        ideaItem.priority = "0";
+    }
+
+    if (deadlineSelector.selectedIndex === 0) {
+        ideaItem.deadline = undefined;
+    } else if (deadlineSelector.selectedIndex > 0) {
         ideaItem.deadline = moment().add(deadlineInputLabel.value, globalVariables.deadlineSelection)
     }
     const newInputFields = document.querySelectorAll(".newInputDiv")
@@ -333,7 +384,8 @@ const addNewInput = () => {
     const removeNewInputButton = document.createElement("button")
     removeNewInputButton.classList.add("removeNewInputButton")
     removeNewInputButton.addEventListener("click", function (e) {
-        e.target.parentElement.remove()
+        e.target.parentElement.innerHTML = ""
+        newInputDiv.remove();
     })
     newInputDiv.classList.add("newInputDiv")
     newInput.classList.add("addedInputField")
@@ -360,6 +412,87 @@ const showNewInput = (item) => {
     inputButtonContainer.appendChild(newInputDiv)
 }
 
+
+const adjustPriority = (idea) => {
+    console.log(idea.priority)
+    if (idea.priority === "0") {
+        prioritySelector.className = "priorityChangeButton"
+    } else if (idea.priority === "1") {
+        prioritySelector.className = "priorityChangeButton priority1"
+    } else if (idea.priority === "2") {
+        console.log("hallo test 2")
+        prioritySelector.className = "priorityChangeButton priority2"
+    }
+}
+
+
+const changePriority = () => {
+    if (prioritySelector.className === "priorityChangeButton") {
+        prioritySelector.className = "priorityChangeButton priority1"
+    } else if (prioritySelector.className === "priorityChangeButton priority1") {
+        prioritySelector.className = "priorityChangeButton priority2"
+    } else if (prioritySelector.className === "priorityChangeButton priority2") {
+        prioritySelector.className = "priorityChangeButton"
+    }
+}
+
+prioritySelector.addEventListener("click", changePriority);
+
+
+const sortIdeas = (ideaList, sortBy) => {
+    if (sortBy === "by deadline") {
+        return ideaList.sort(function (a, b) {
+            if (a.status === "checked" && b.status === "progress") {
+                return 1
+            } else if (b.status === "checked" && a.status === "progress") {
+                return -1
+            }
+            if (a.deadline === undefined && b.deadline != undefined) {
+                return 1
+            } else if (b.deadline === undefined && a.deadline != undefined) {
+                return -1
+            }
+            if (moment(a.deadline).isAfter(b.deadline)) {
+                return 1
+            } else if (moment(b.deadline).isAfter(a.deadline)) {
+                return -1
+            } else {
+                return 0
+            }
+        })
+    } else if (sortBy === "by creation date") {
+        return ideaList.sort(function (a, b) {
+            if (a.status === "checked" && b.status === "progress") {
+                return 1
+            } else if (b.status === "checked" && a.status === "progress") {
+                return -1
+            }
+            if (moment(a.createdAt).isAfter(b.createdAt)) {
+                return 1
+            } else if (moment(b.createdAt).isAfter(a.createdAt)) {
+                return -1
+            } else {
+                return 0
+            }
+        })
+    } else if (sortBy === "by priority") {
+        return ideaList.sort(function (a, b) {
+            if (a.status === "checked" && b.status === "progress") {
+                return 1
+            } else if (b.status === "checked" && a.status === "progress") {
+                return -1
+            }
+            if (a.priority > b.priority) {
+                return -1
+            } else if (a.priority < b.priority) {
+                return 1
+            } else {
+                return 0
+            }
+        })
+    }
+}
+
 //INTERFACE INTERACTION
 const emptyDivElement = (div) => {
     div.innerHTML = ""
@@ -375,7 +508,6 @@ const showIdeaInterface = function (e, idea) {
         editIdea.remove();
         document.querySelector(".editButton-editing-mode").classList.remove("editButton-editing-mode")
         toggledOpacity = true;
-
     }
 
     //activate Opacity and highlighting for selected item
@@ -440,6 +572,9 @@ const showIdeaInterface = function (e, idea) {
             })
             showStepsTowardDiv.classList.add("showStepsTowardDiv")
         }
+
+        showTimeRemaining.textContent = moment().to(idea.deadline);
+        createdAtLabel.textContent = "Created " + moment(idea.createdAt).format("dd. DD.MM.YYYY, HH:mm")
         constructShowInterfaceDOM(idea)
         ideaDiv.insertBefore(showIdeaDiv, ideaDiv.childNodes[i])
 
@@ -486,7 +621,6 @@ const editIdeaInterface = function (e, editedIdea) {
 
     globalVariables.ideaIndex = getIdeaIndex(editedIdea)
     globalVariables.e = e;
-
     let interfaceOpen = checkIfInterfaceOpen()
     if (!interfaceOpen) {
         toggleOpacity(e)
@@ -521,6 +655,8 @@ const editIdeaInterface = function (e, editedIdea) {
         } else {
             editStepTowardsInput.value = allIdeas[globalVariables.ideaIndex].stepTowards[0]
         }
+
+        deadlineInputLabel.value = "";
         inputButtonContainer.innerHTML = "";
         inputButtonContainer.classList.add("inputButtonContainer")
         inputButtonContainer.appendChild(editStepTowardsInput)
@@ -533,13 +669,13 @@ const editIdeaInterface = function (e, editedIdea) {
             }
         }
 
-
         if (editedIdea.deadline != undefined) {
             console.log(editedIdea.deadline)
             deadlineInputLabel.style.display = "none";
             deadlineSelector.style.display = "none";
             deadlineLabel.style.display = "inline";
             deadlineLabel.textContent = moment().to(editedIdea.deadline);
+            deadlineSelector.selectedIndex = 99;
         } else {
             deadlineLabel.style.display = "none";
             deadlineInputLabel.style.display = "inline";
@@ -549,6 +685,7 @@ const editIdeaInterface = function (e, editedIdea) {
         saveChangesButton.addEventListener("click", saveEditChangesForm);
         abortChangesButton.addEventListener("click", abortChangesEditForm);
         cancelIdeaButton.addEventListener("click", cancelIdea);
+        adjustPriority(editedIdea)
         constructEditInterfaceDOM()
         lastEditedLabel.textContent = "Last updated " + moment(editedIdea.lastUpdated).fromNow()
         const i = globalVariables.ideaIndex + 1
@@ -564,14 +701,18 @@ const editIdeaInterface = function (e, editedIdea) {
 
 //RENDER IDEAS
 const renderIdeas = function () {
+    let sortedIdeas = sortIdeas(allIdeas, globalVariables.sortBy);
     ideaDiv.innerHTML = ""
     ideaListElement.innerHTML = ""
-    ideaDiv.classList.add("idea-div");
-    if (allIdeas.length > 0) {
-        allIdeas.forEach((idea) => {
+    ideaListSettings.innerHTML = ""
+
+    ideaListSettings.appendChild(sortIdeasSelectorDiv)
+    if (sortedIdeas.length > 0) {
+        sortedIdeas.forEach((idea) => {
             let timeRemainingLabel = document.createElement("label");
             timeRemainingLabel.classList.add("timeRemainingLabel");
             const checkedIcon = document.createElement("button")
+            const priorityIndicator = document.createElement("button")
             checkedIcon.classList.add("checkedIcon")
             const ideaDivContainer = document.createElement("div")
             ideaDivContainer.classList.add("ideaDivContainer")
@@ -581,7 +722,7 @@ const renderIdeas = function () {
             buttonDiv.classList.add("buttonContainer");
             editButton.classList.add("editButton");
 
-            timeRemainingLabel.textContent = "Deadline " + moment().to(idea.deadline);
+            timeRemainingLabel.textContent = "Due " + moment().to(idea.deadline);
 
             const newIdea = document.createElement("li");
             newIdea.innerText = idea.title;
@@ -597,11 +738,23 @@ const renderIdeas = function () {
                 //newIdea.classList.toggle("notClickable")
                 editIdeaInterface(e, idea)
             })
-
             buttonDiv.appendChild(editButton)
-            if(idea.deadline != undefined) {
-            newIdea.appendChild(timeRemainingLabel)
+
+            if (idea.status != "checked") {
+                if (idea.priority === "0") {
+                    priorityIndicator.className = "priorityIndicator"
+                } else if (idea.priority === "1") {
+                    priorityIndicator.className = "priorityIndicator priority1"
+                } else if (idea.priority === "2") {
+                    priorityIndicator.className = "priorityIndicator priority2"
+                }
+                newIdea.appendChild(priorityIndicator)
             }
+            
+            if (idea.deadline != undefined && idea.status != "checked") {
+                newIdea.appendChild(timeRemainingLabel)
+            }
+
             ideaDivContainer.appendChild(newIdea)
             ideaDivContainer.appendChild(buttonDiv)
             ideaDiv.appendChild(ideaDivContainer)
@@ -640,6 +793,12 @@ document.querySelector("#forgetNewIdeaButton").addEventListener("click", functio
     setTimeout(() => { showIdeaDiv.className = "form-container"; renderIdeas(); }, 200);
 })
 
+
+sortIdeasSelector.addEventListener("change", function (e) {
+    globalVariables.sortBy = e.target.value
+    renderIdeas()
+})
+
 deadlineSelector.addEventListener("change", function (e) {
     globalVariables.deadlineSelection = e.target.value
     if (e.target.value === "off") {
@@ -654,13 +813,12 @@ deadlineSelector.addEventListener("change", function (e) {
 
 const checkDeadlineInput = (e) => {
     let input = e.charCode
-    console.log(input)
     if (input < 46 || input > 57) {
         e.preventDefault()
         alertify.message("Please enter a number")
     }
 }
-deadlineInputLabel.addEventListener("keypress", checkDeadlineInput, false)
+deadlineInputLabel.addEventListener("keypress", checkDeadlineInput)
 
 //EVENT LISTENER INPUT
 document.querySelector("#idea-title").addEventListener("keydown", (e) => {
