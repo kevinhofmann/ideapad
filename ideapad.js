@@ -6,7 +6,8 @@ let globalVariables = {
     e: "",
     idea: "",
     deadlineSelection: "",
-    sortBy: "by creation date"
+    sortBy: "by creation date",
+    showArchived: "false"
 }
 
 const getSavedIdeas = () => {
@@ -21,9 +22,19 @@ const getSavedIdeas = () => {
 
 let allIdeas = getSavedIdeas();
 
+
 //Takes the selected Idea Item out of the Ideas Array 
 let getIdeaItem = () => {
     return allIdeas[globalVariables.ideaIndex];
+}
+
+let getIdeasNotArchived = () => {
+    let unArchivedIdeas = []
+    allIdeas.forEach(idea => {
+        if(idea.status != "archived")
+            unArchivedIdeas.push(idea)
+    })
+    return unArchivedIdeas
 }
 
 //GRAB CSS ELEMENTS 
@@ -53,6 +64,8 @@ const showTimeRemainingLabel = document.createElement("label");
 const showTimeRemaining = document.createElement("label");
 const markCheckedButton = document.createElement("button");
 const markUncheckedButton = document.createElement("button");
+const archiveIdeaButton = document.createElement("button");
+const unArchiveIdeaButton = document.createElement("button");
 const abortChangesButton = document.createElement("button");
 const saveChangesButton = document.createElement("button");
 const cancelIdeaButton = document.createElement("button");
@@ -93,6 +106,12 @@ sortIdeasSelector.options.add(sortByPriority, 2)
 sortIdeasSelector.classList.add("sortIdeasSelector")
 const sortIdeasSelectorLabel = document.createElement("label")
 sortIdeasSelectorLabel.textContent = "Sort "
+const showArchivedIdeasCheckBox = document.createElement("input")
+showArchivedIdeasCheckBox.setAttribute("type", "checkbox");
+showArchivedIdeasCheckBox.classList.add("showArchivedIdeasCheckBox")
+const showArchivedIdeasLabel = document.createElement("label");
+showArchivedIdeasLabel.textContent = "Show archived ideas";
+showArchivedIdeasLabel.classList.add("sortIdeasSelectorLabel");
 
 breakElement.innerHTML = "<br>"
 showTimeRemainingLabel.classList.add("ideaLabels");
@@ -109,6 +128,10 @@ emptyMessageElement2.className = "emptyMessageElement";
 showIdeaDiv.className = "showIdeaDiv";
 markUncheckedButton.classList.add("markUncheckedButton")
 markUncheckedButton.setAttribute("title", "Undo completion");
+archiveIdeaButton.classList.add("archiveIdeaButton");
+archiveIdeaButton.setAttribute("title", "Move idea to archive");
+unArchiveIdeaButton.classList.add("unArchivedIdeaButton");
+unArchiveIdeaButton.setAttribute("title", "Get back from archive")
 markCheckedButton.classList.add("markCheckedButton");
 markCheckedButton.setAttribute("title", "Mark idea completed");
 saveChangesButton.classList.add("saveEditedIdeaButton");
@@ -132,8 +155,15 @@ prioritySelector.classList.add("priorityChangeButton");
 prioritySelectorLabel.classList.add("prioritySelectorLabel");
 prioritySelectorLabel.textContent = "Priority";
 
+const messageLabel = document.createElement("label")
+messageLabel.classList.add("messageLabel")
+messageLabel.textContent = "Welcome back"
 const sortIdeasSelectorDiv = document.createElement("div")
 sortIdeasSelectorDiv.classList.add("sortIdeasSelectorDiv")
+sortIdeasSelectorDiv.appendChild(messageLabel)
+sortIdeasSelectorDiv.appendChild(showArchivedIdeasLabel)
+sortIdeasSelectorDiv.appendChild(showArchivedIdeasCheckBox)
+sortIdeasSelectorDiv.appendChild(breakElement)
 sortIdeasSelectorDiv.appendChild(sortIdeasSelectorLabel)
 sortIdeasSelectorDiv.appendChild(sortIdeasSelector)
 
@@ -209,19 +239,27 @@ const constructShowInterfaceDOM = (idea) => {
         showIdeaDiv.appendChild(showTimeRemaining);
     }
     showIdeaButtonDiv.remove();
+    showIdeaButtonDiv.innerHTML = ""
     if (idea.status === "progress") {
         showIdeaButtonDiv.appendChild(markCheckedButton)
-        showIdeaDiv.appendChild(showIdeaButtonDiv)
         if (showIdeaButtonDiv.contains(markUncheckedButton)) {
             markUncheckedButton.remove()
+            archiveIdeaButton.remove()
+            unArchiveIdeaButton.remove()
         }
     } else if (idea.status === "checked") {
         showIdeaButtonDiv.appendChild(markUncheckedButton)
-        showIdeaDiv.appendChild(showIdeaButtonDiv)
+        showIdeaButtonDiv.appendChild(archiveIdeaButton)
         if (showIdeaButtonDiv.contains(markCheckedButton)) {
             markCheckedButton.remove()
+            unArchiveIdeaButton.remove()
         }
+    } else if (idea.status === "archived") {
+        showIdeaButtonDiv.appendChild(unArchiveIdeaButton)
+        markCheckedButton.remove()
+        markUncheckedButton.remove()
     }
+    showIdeaDiv.appendChild(showIdeaButtonDiv)
 }
 
 
@@ -240,6 +278,10 @@ class Idea {
             this.priority = priority
     }
 }
+
+const exampleIdea = new Idea(0, "Start following through", "description", "reason", "steptowards", "progress", moment(), moment(),undefined, "2")
+
+
 
 const getIdeaIndex = (ideaIndex) => {
     return allIdeas.findIndex((idea) => idea.id === ideaIndex.id)
@@ -313,6 +355,8 @@ const saveEditChangesForm = () => {
     saveIdeas(allIdeas);
     if (ideaItem.status === "checked") {
         ideaDiv.childNodes[globalVariables.ideaIndex].firstChild.innerHTML = editTitleInput.value + "<button class='checkedIcon'></button>";
+    } else if (ideaItem.status === "archived") {
+        ideaDiv.childNodes[globalVariables.ideaIndex].firstChild.innerHTML = editTitleInput.value + "<button class='archivedIcon'></button>";
     } else {
         ideaDiv.childNodes[globalVariables.ideaIndex].firstChild.innerHTML = editTitleInput.value
     }
@@ -362,8 +406,24 @@ const markIdeaUnchecked = () => {
     setTimeout(() => { showIdeaDiv.className = ""; renderIdeas(); showIdeaDiv.remove(); }, 450);
 }
 
+const archiveIdea = () => {
+    allIdeas[globalVariables.ideaIndex].status = "archived"
+    saveIdeas(allIdeas)
+    showIdeaDiv.classList.add("showIdeaDiv:hide")
+    setTimeout(() => { showIdeaDiv.className = ""; renderIdeas(); showIdeaDiv.remove(); }, 450);
+}
+
+const unArchiveIdea = () => {
+    allIdeas[globalVariables.ideaIndex].status = "checked"
+    saveIdeas(allIdeas)
+    showIdeaDiv.classList.add("showIdeaDiv:hide")
+    setTimeout(() => { showIdeaDiv.className = ""; renderIdeas(); showIdeaDiv.remove(); }, 450);
+}
+
 markCheckedButton.addEventListener("click", markIdeaChecked);
 markUncheckedButton.addEventListener("click", markIdeaUnchecked);
+archiveIdeaButton.addEventListener("click", archiveIdea);
+unArchiveIdeaButton.addEventListener("click", unArchiveIdea);
 
 const cancelIdea = () => {
     alertify.confirm("Sure?", "Do you really want to remove this idea from your list?", function () {
@@ -442,6 +502,11 @@ prioritySelector.addEventListener("click", changePriority);
 const sortIdeas = (ideaList, sortBy) => {
     if (sortBy === "by deadline") {
         return ideaList.sort(function (a, b) {
+            if(a.status === "archived" && b.status != "archived") {
+                return 1
+            } else if (b.status === "archived" && a.status != "archived") {
+                return -1
+            }
             if (a.status === "checked" && b.status === "progress") {
                 return 1
             } else if (b.status === "checked" && a.status === "progress") {
@@ -462,6 +527,11 @@ const sortIdeas = (ideaList, sortBy) => {
         })
     } else if (sortBy === "by creation date") {
         return ideaList.sort(function (a, b) {
+            if(a.status === "archived" && b.status != "archived") {
+                return 1
+            } else if (b.status === "archived" && a.status != "archived") {
+                return -1
+            }
             if (a.status === "checked" && b.status === "progress") {
                 return 1
             } else if (b.status === "checked" && a.status === "progress") {
@@ -477,6 +547,11 @@ const sortIdeas = (ideaList, sortBy) => {
         })
     } else if (sortBy === "by priority") {
         return ideaList.sort(function (a, b) {
+            if(a.status === "archived" && b.status != "archived") {
+                return 1
+            } else if (b.status === "archived" && a.status != "archived") {
+                return -1
+            }
             if (a.status === "checked" && b.status === "progress") {
                 return 1
             } else if (b.status === "checked" && a.status === "progress") {
@@ -705,15 +780,16 @@ const renderIdeas = function () {
     ideaDiv.innerHTML = ""
     ideaListElement.innerHTML = ""
     ideaListSettings.innerHTML = ""
-
     ideaListSettings.appendChild(sortIdeasSelectorDiv)
-    if (sortedIdeas.length > 0) {
+    if (sortedIdeas.length > 0 && getIdeasNotArchived().length > 0) {
         sortedIdeas.forEach((idea) => {
             let timeRemainingLabel = document.createElement("label");
             timeRemainingLabel.classList.add("timeRemainingLabel");
             const checkedIcon = document.createElement("button")
+            const archivedIcon = document.createElement("button")
             const priorityIndicator = document.createElement("button")
             checkedIcon.classList.add("checkedIcon")
+            archivedIcon.classList.add("archivedIcon")
             const ideaDivContainer = document.createElement("div")
             ideaDivContainer.classList.add("ideaDivContainer")
             const buttonDiv = document.createElement("div")
@@ -740,7 +816,7 @@ const renderIdeas = function () {
             })
             buttonDiv.appendChild(editButton)
 
-            if (idea.status != "checked") {
+            if (idea.status === "progress") {
                 if (idea.priority === "0") {
                     priorityIndicator.className = "priorityIndicator"
                 } else if (idea.priority === "1") {
@@ -751,22 +827,28 @@ const renderIdeas = function () {
                 newIdea.appendChild(priorityIndicator)
             }
             
-            if (idea.deadline != undefined && idea.status != "checked") {
+            if (idea.deadline != undefined && idea.status === "progress") {
                 newIdea.appendChild(timeRemainingLabel)
             }
 
+            if(idea.status != "archived" || globalVariables.showArchived === true) {
             ideaDivContainer.appendChild(newIdea)
             ideaDivContainer.appendChild(buttonDiv)
             ideaDiv.appendChild(ideaDivContainer)
+            }
 
             if (idea.status === "checked") {
                 ideaDivContainer.classList.add("checked")
                 newIdea.appendChild(checkedIcon)
-            } else {
+            } else if (idea.status === "archived") {
+                ideaDivContainer.classList.add("archived")
+                newIdea.appendChild(archivedIcon)
+            }else {
                 ideaDivContainer.classList.add("unchecked")
             }
         })
     } else {
+
         emptyMessageElement.textContent = "Life is empty without inspiring ideas."
         emptyMessageElement2.textContent = "Add one above and start transforming it into reality!"
         ideaDiv.appendChild(breakElement)
@@ -798,6 +880,12 @@ sortIdeasSelector.addEventListener("change", function (e) {
     globalVariables.sortBy = e.target.value
     renderIdeas()
 })
+
+showArchivedIdeasCheckBox.addEventListener("change", function (e) {
+    globalVariables.showArchived = e.target.checked
+    renderIdeas()
+})
+
 
 deadlineSelector.addEventListener("change", function (e) {
     globalVariables.deadlineSelection = e.target.value

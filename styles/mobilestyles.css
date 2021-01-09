@@ -184,3 +184,30 @@
 .timeRemainingLabel {
     font-size: 0.5em;
 }
+
+.sortIdeasSelector {
+    font-size: 0.7em;
+    margin-left: 5px;
+    padding-left: 0.3%;
+    margin-right: 5%;
+  }
+  
+  .sortIdeasSelectorLabel {
+      font-size: 0.7em;
+  }
+
+  .priorityChangeButton {
+      width: 3em;
+      height: 3em;
+      top: 2%;
+      right: 3%;
+  }
+
+  .priorityIndicator {
+      width: 2.5em;
+      height: 2.5em;
+  }
+
+  .showArchivedIdeasCheckBox {
+      margin-top: 0px;
+  }

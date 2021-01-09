@@ -27,7 +27,7 @@ h1 {
     opacity: 0.9;
     text-align: center;
     color: rgb(255, 255, 255);
-    text-shadow: 3px 5px 4px rgba(97, 97, 97, 0.6);
+    text-shadow: 3px 5px 4px rgba(97, 97, 97, 0.2);
     margin-bottom: 0px;
     margin-top: 0.4em;
     font-family: 'Montserrat', sans-serif;
@@ -53,9 +53,9 @@ h2 {
 
 .emptyMessageElement {
   line-height: 3em;
-  font-size: 0.8em;
+  font-size: 0.7em;
   font-family: 'Montserrat', sans-serif;
-  font-weight: 100;
+  font-weight: 200;
   display: block;
   text-align: center;
   color: rgb(46, 46, 46);
@@ -87,18 +87,11 @@ a:-webkit-any-link {
     border: 1px white;
     margin-top: 5px;
     padding-left: 0.5%;
-    box-shadow: 1px 1px 10px 0.2px rgba(97, 97, 97, 0.4);
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     outline: none;
     transition: all 0.25s;
 }
-
-.input:hover {
-    transition: all 0.4s;
-
-    box-shadow: 2px 2px 15px 0.5px rgba(97, 97, 97, 0.5);
-  }
 
 /*ANIMATIONS*/
 .reducedOpacity {
@@ -288,20 +281,20 @@ a:-webkit-any-link {
   filter: invert(100%);
     cursor: pointer;
     margin-top: 5em;
-    height: 70px;
-    width: 4em;
+    height: 3.5em;
+    width: 3.5em;
     border: none;
     margin: 0px 10px;
     opacity: 0.8;
     outline: none;
-    background: url("../img/hinzufugen.png");
+    background: url("../img/hinzufugen_color.png");
     background-size: contain;
     background-repeat: no-repeat;
+    filter: saturate(0.7);
 }
 
 #addNewIdeaButton:hover {
-    filter: none;
-    opacity: 1;
+    opacity: 0.9;
     transform: scale(1.08) ;
     transition: all 0.15s;
 }
@@ -310,20 +303,20 @@ a:-webkit-any-link {
   filter: invert(100%);
     cursor: pointer;
     margin-top: 5em;
-    height: 70px;
-    width: 4em;
+    height: 3.5em;
+    width: 3.5em;
     border: none;
     margin: 0px 10px;
     opacity: 0.8;
     outline: none;
-    background: url("../img/stornieren.png");
+    background: url("../img/stornieren_red.png");
     background-size: contain;
     background-repeat: no-repeat;
+    filter: saturate(0.7);
 }
 
 #forgetNewIdeaButton:hover {
-    filter: none;
-    opacity: 1;
+    opacity: 0.9;
     transform: scale(1.08) ;
     transition: all 0.15s;
 }
@@ -374,6 +367,7 @@ display: initial;
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.5;
+  cursor: pointer;
 }
 
 .removeNewInputButton {
@@ -388,6 +382,7 @@ display: initial;
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0.5;
+  cursor: pointer;
 }
 
 .inputWithButton {
@@ -477,7 +472,7 @@ display: initial;
 #idea-list {
     color: rgb(41, 41, 41);
     padding: 3% 5%;
-    padding-top: 0px;
+    padding-top: 2%;
     height: 100%;
     font-size: 1.8em;
 }
@@ -487,14 +482,14 @@ display: initial;
   line-height: 2.1em;
   display: flex;
   margin-top: 15px;
-  box-shadow: 1px 1px 3px 1px rgb(197, 197, 197, 0.6);
+  box-shadow: 1px 1px 3px 1px rgb(197, 197, 197, 0.2);
   transition: all 0.25s;
   position: relative;
 }
 
 .ideaDivContainer:hover {
 transform: scale(1.005);
-box-shadow: 1px 1px 4px 1px rgb(167, 167, 167, 0.6);
+box-shadow: 1px 1px 4px 1px rgb(167, 167, 167, 0.4);
 transition: all 0.25s;
 display: flex;
 }
@@ -513,6 +508,26 @@ display: flex;
   opacity: 0.65;
   outline: none;
   background: url("../img/checked.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: all 0.25s;
+  pointer-events: none;
+}
+
+.archivedIcon {
+  height: 1.5em;
+  width: 1.5em;
+  background-color: rgb(243, 241, 240, 0.3);
+  border: none;
+  color: rgb(46, 46, 46);
+  margin-right: 0.5em;
+  margin-left: 1em;
+  margin-bottom: auto;
+  margin-top: auto;
+  font-size: 0.5em;
+  opacity: 1;
+  outline: none;
+  background: url("../img/archived.png");
   background-size: contain;
   background-repeat: no-repeat;
   transition: all 0.25s;
@@ -560,6 +575,16 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
   background: rgb(8, 255, 50);
     background: linear-gradient(86deg, rgba(146, 255, 113, 0.4) 30%, rgba(255,178,50,0.3) 100%);
   }  
+
+  .archived {
+    background: rgb(169,246,10);
+  background: linear-gradient(86deg, rgba(231, 210, 21, 0.35) 30%, rgba(255,173,38,0) 80%);
+  }
+  
+  .archived:hover {
+    background: rgb(8, 255, 50);
+      background: linear-gradient(86deg,rgba(247, 222, 4, 0.4) 30%, rgba(255,178,50,0.3) 100%);
+    }  
 
 .ideaLabels {
     color: rgb(46, 46, 46);
@@ -613,7 +638,6 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
   animation-fill-mode: forwards;
   opacity: 1;
   margin-bottom: 1.5em;
-  padding-bottom: 1em !important;
   padding: 1.5em;
   height: 100%;
   margin-top: 1em;
@@ -623,6 +647,7 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
   box-shadow: 1px 1px 15px 0.7px rgb(167, 167, 167, 0.5);
   position: relative;
   -webkit-perspective: 1000;
+  text-align: justify;
 }
 
 .showIdeaDiv:hover {
@@ -655,6 +680,7 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
   opacity: 0.9;
   text-shadow: 1px 1px 25px rgb(167, 167, 167, 0.2);
   word-wrap: break-word;
+  text-align: justify;
 }
 
 .stepsTowardsList {
@@ -681,7 +707,7 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
 
 .deadlineLabel {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.75em;
+  font-size: 0.7em;
   font-weight: 450;
   margin-bottom: 3em;
   color: rgb(46, 46, 46);
@@ -725,29 +751,29 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
 
 .sortIdeasSelector {
   outline: none;
-  font-size: 0.9em;
+  font-size: 0.91em;
   opacity: 0.9;
-  background-color: rgb(255, 255, 255, 0.8);
+  background-color: rgba(250, 250, 250);
   color: rgb(46, 46, 46);
-  border: 1px white;
-  margin-left: 10px;
+  border: 1px rgb(236, 236, 236);
+  margin-left: 3px;
   margin-bottom: 10px;
-  padding-left: 0.5%;
-  box-shadow: 1px 1px 10px 0.2px rgba(97, 97, 97, 0.4);
+  padding-left: 0.3%;
   font-family: 'Montserrat', sans-serif;
   font-weight: 200;
   transition: all 0.25s;
   margin-right: 5%;
+  letter-spacing: -0.2px;
 }
 
 .sortIdeasSelectorLabel {
   color: rgb(46, 46, 46);
   opacity: 0.8;
-  font-size: 0.9em;
+  font-size: 0.91em;
   line-height: normal;
   font-family: 'Montserrat', sans-serif;
   font-weight: 200;
-  text-shadow: 1px 1px 12px rgb(167, 167, 167, 0.2);
+  letter-spacing: -0.2px;
 }
 
 .sortIdeasSelectorDiv {
@@ -755,12 +781,32 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
   justify-content: flex-end;
   width: 100%;
   height: auto;
-  padding-top: 3%;
+  padding-top: 2%;
+  padding-bottom: 0.7%;
+  background-color: bisque;
+  border: 1px white;
+  box-shadow: 0px 4px 1.5px -4px rgb(131, 131, 131, 0.8);
+  opacity: 0.7;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.messageLabel {
+  position: absolute;
+  left: 5%;
+  color: rgb(46, 46, 46);
+  opacity: 0.8;
+  font-size: 1em;
+  line-height: normal;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.5px;
+  transition: all 0.5s;
 }
 
 .priorityIndicator {
-  height: 1.5em;
-  width: 1.5em;
+  height: 2em;
+  width: 2em;
   border: none;
   color: rgb(46, 46, 46);
   font-size: 0.5em;
@@ -773,8 +819,8 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
   position: absolute;
   right: 1%;
   top: 0.1em;
+  pointer-events: none;
 }
-
 
 .priorityChangeButton {
   cursor: pointer;
@@ -786,6 +832,7 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
   outline: none;
   position: absolute;
   right: 4%;
+  top: 3.5%;
   background: url("../img/priotiry0.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -958,19 +1005,20 @@ background: linear-gradient(86deg, rgba(169,246,10,0.35) 30%, rgba(255,173,38,0)
     font-size: 0.5em;
     opacity: 0.8;
     outline: none;
-    background: url("../img/arrow_bw.png");
+    background: url("../img/arrow_color.png");
     background-size: contain;
     background-repeat: no-repeat;
+    filter: saturate(0.7);
 }
 
 .abortEditingButton:hover {
 transform: scale(1.08) ;
 transition: all 0.15s;
-opacity: 1;
+opacity: 0.9;
 }
 
 .cancelEditedIdeaButton {
-  
+  filter: saturate(0.7);
   height: 50px;
   width: 4em;
   border: none;
@@ -979,7 +1027,7 @@ opacity: 1;
   font-size: 0.5em;
   opacity: 0.8;
   outline: none;
-  background: url("../img/stornieren.png");
+  background: url("../img/stornieren_red.png");
   background-size: contain;
   background-repeat: no-repeat;
 }
@@ -987,7 +1035,7 @@ opacity: 1;
 .cancelEditedIdeaButton:hover {
 transform: scale(1.08) ;
 transition: all 0.15s;
-opacity: 1;
+opacity: 0.9;
 }
 
 .saveEditedIdeaButton {
@@ -999,16 +1047,16 @@ opacity: 1;
     font-size: 0.5em;
     opacity: 0.8;
     outline: none;
-    background: url("../img/hakchen.png");
+    background: url("../img/hakchen_green.png");
     background-size: contain;
     background-repeat: no-repeat;
+    filter: saturate(0.7);
 }
 
 .saveEditedIdeaButton:hover {
-    opacity: 1;
 transform: scale(1.08) ;
 transition: all 0.15s;
-opacity: 1;
+opacity: 0.9;
 }
 
 .markCheckedButton {
@@ -1019,12 +1067,13 @@ opacity: 1;
   color: rgb(46, 46, 46);
   margin: auto auto;
   font-size: 0.5em;
-  opacity: 0.8;
+  opacity: 0.7;
   outline: none;
-  background: url("../img/ziel.png");
+  background: url("../img/ziel_color.png");
   background-size: contain;
   background-repeat: no-repeat;
-}
+  cursor: pointer;
+  }
 
 .markCheckedButton:hover {
 transform: scale(1.08) ;
@@ -1040,17 +1089,73 @@ opacity: 1;
   color: rgb(46, 46, 46);
   margin: auto auto;
   font-size: 0.5em;
-  opacity: 0.8;
+  opacity: 0.7;
   outline: none;
-  background: url("../img/arrow_bw.png");
+  background: url("../img/arrow_color.png");
   background-size: contain;
   background-repeat: no-repeat;
+  cursor: pointer;
+  filter: saturate(0.7);
 }
 
 .markUncheckedButton:hover {
 transform: scale(1.08) ;
 transition: all 0.15s;
-opacity: 1;
+opacity: 0.8;
+filter: saturate(1);
+}
+
+.archiveIdeaButton {
+  height: 3em;
+  width: 3em;
+  background-color: rgb(243, 241, 240, 0.3);
+  border: none;
+  color: rgb(46, 46, 46);
+  margin: auto auto;
+  font-size: 0.5em;
+  opacity: 0.7;
+  outline: none;
+  background: url("../img/archiv.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  cursor: pointer;
+}
+
+.archiveIdeaButton:hover {
+  transform: scale(1.08) ;
+  transition: all 0.15s;
+  opacity: 0.9;
+}
+
+.unArchivedIdeaButton {
+  height: 3em;
+  width: 3em;
+  background-color: rgb(243, 241, 240, 0.3);
+  border: none;
+  color: rgb(46, 46, 46);
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  opacity: 0.6;
+  outline: none;
+  background: url("../img/unarchiv.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.unArchivedIdeaButton {
+transform: scale(1.08) ;
+transition: all 0.15s;
+opacity: 0.9;
+}
+
+.showArchivedIdeasCheckBox {
+  margin-right: 3%;
+  opacity: 0.8;
 }
 
 .editButtonDiv {
@@ -1063,7 +1168,6 @@ opacity: 1;
   margin: auto auto;
   display: flex;
 }
-    
 
 .textareaInput {
     padding-top: 1.2%;
